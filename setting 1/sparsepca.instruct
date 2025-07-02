@@ -1,0 +1,51 @@
+Given an instruction about a machine learning algorithm, implement the relevant code based on this instruction.
+You should implement the algorithm by using Python, Numpy or Scipy from scratch. You can't use any functions or classes from scikit-learn.
+You only need to implement the algorithm module, and you don't need to generate test cases.
+You should create as many sub-functions or sub-classes as possible to help you implement the entire algorithm.
+Just output the code of the algorithm, don't output anything else.
+
+Instruction:
+
+Implement the Sparse Principal Components Analysis algorithm for dimensionality reduction with python, numpy and scipy.
+Finds the set of sparse components that can optimally reconstruct the data.  The amount of sparseness is controllable by the coefficient of the L1 penalty, given by the parameter alpha.
+
+The main principle behind Sparse PCA is to introduce sparsity into the PCA framework. Traditional PCA finds linear combinations of variables that capture the maximum variance in the data, but these combinations often involve all variables, making interpretation difficult. Sparse PCA, on the other hand, imposes a sparsity constraint, ensuring that only a subset of variables has non-zero loadings in each principal component.
+
+### Algorithmic Flow
+
+1. **Data Centering**: Start by centering the data matrix \( X \) by subtracting the mean of each variable from the data.
+
+2. **Covariance Matrix**: Compute the covariance matrix \( \Sigma = \frac{1}{n} X^T X \), where \( n \) is the number of observations.
+
+3. **Objective Function**: The goal is to maximize the variance explained by the principal components while imposing a sparsity constraint. This can be formulated as:
+
+   \[
+   \max_{u} \quad u^T \Sigma u \quad \text{subject to} \quad \|u\|_2 = 1 \quad \text{and} \quad \|u\|_0 \leq k
+   \]
+
+   Here, \( u \) is the loading vector, \( \|u\|_2 \) is the L2 norm ensuring unit length, and \( \|u\|_0 \) is the L0 norm representing the number of non-zero elements, constrained by \( k \).
+
+4. **Relaxation and Regularization**: Since the L0 norm constraint is non-convex and difficult to optimize, it is often relaxed to an L1 norm constraint, which is convex and promotes sparsity:
+
+   \[
+   \max_{u} \quad u^T \Sigma u \quad \text{subject to} \quad \|u\|_2 = 1 \quad \text{and} \quad \|u\|_1 \leq \lambda
+   \]
+
+   Here, \( \lambda \) is a regularization parameter controlling the sparsity level.
+
+5. **Optimization**: Various optimization techniques can be used to solve the above problem, such as the Lasso (Least Absolute Shrinkage and Selection Operator), iterative thresholding, or greedy algorithms like the Orthogonal Matching Pursuit.
+
+6. **Iterative Refinement**: The process is often iterative, where the sparse loadings are updated, and the data is deflated to find subsequent sparse principal components.
+
+7. **Component Extraction**: Once the sparse loadings are determined, the sparse principal components can be extracted by projecting the original data onto these loadings.
+
+The module should be named GPTSparsePCA.
+The init function should include the following parameters:
+n_components: Number of sparse atoms to extract;
+alpha: Sparsity controlling parameter. Higher values lead to sparser components;
+ridge_alpha: Amount of ridge shrinkage to apply in order to improve conditioning when calling the transform method.
+The module must contain a fit_transform function, which is used for fitting data and performing dimensionality reduction transformations.
+The fit_transform function accepts X as input and return reduced_X where
+X: X is the features of the data, which is a numpy array and it's shape is [N, d]. N is the number of the train data and d is the dimension.
+reduced_X: reduced_X is the reduced features after dimensionality reduction. The shape should be [N, low_d], where N is the num of the data and low_d is the reduced dimension.
+You should just return the code for the module, don't return anything else.

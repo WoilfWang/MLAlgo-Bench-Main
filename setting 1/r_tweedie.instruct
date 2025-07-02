@@ -1,0 +1,60 @@
+Given an instruction about a machine learning algorithm, implement the relevant code based on this instruction.
+You should implement the algorithm by using Python, Numpy or Scipy from scratch. You can't use any functions or classes from scikit-learn.
+You only need to implement the algorithm module, and you don't need to generate test cases.
+You should create as many sub-functions or sub-classes as possible to help you implement the entire algorithm.
+Just output the code of the algorithm, don't output anything else.
+
+Instruction:
+
+Implement the tweedie regressor with python, numpy and scipy. Generalized Linear Model with a tweedie distribution. This estimator can be used to model different GLMs depending on the power parameter, which determines the underlying distribution.  
+
+The Tweedie distribution is characterized by a power parameter \( p \), which determines the specific member of the Tweedie family. The distribution is defined for \( p \geq 0 \), except for \( p = 1 \) (which corresponds to the Poisson distribution with a log link function and is not defined because of the integral divergence).
+
+- **Normal Distribution**: When \( p = 0 \), the Tweedie distribution becomes a normal distribution with a variance proportional to the mean.
+- **Poisson Distribution**: For \( p = 1 \), it approaches a Poisson-like distribution (though technically undefined for Tweedie).
+- **Gamma Distribution**: When \( p = 2 \), it corresponds to a gamma distribution.
+- **Compound Poisson-Gamma Distribution**: For \( 1 < p < 2 \), it represents a compound Poisson-gamma distribution, which can model overdispersed count data.
+
+### Algorithmic Flow of Tweedie Regressor
+
+1. **Model Specification**:
+   - The Tweedie regressor models the mean \( \mu \) of the dependent variable \( Y \) as a function of independent variables \( X \) using a link function \( g \):
+     \[
+     g(\mu) = X\beta
+     \]
+   - The link function \( g \) is typically the natural logarithm, making \( \mu = e^{X\beta} \).
+
+2. **Parameter Estimation**:
+   - The parameters \( \beta \) are estimated using maximum likelihood estimation (MLE). The likelihood function depends on the chosen value of \( p \).
+   - For \( p = 0 \) (normal distribution), the likelihood function is based on the normal probability density function:
+     \[
+     L(\beta) = \prod_{i=1}^n \frac{1}{\sqrt{2\pi\sigma^2}} \exp\left(-\frac{(y_i - \mu_i)^2}{2\sigma^2}\right)
+     \]
+   - The log-likelihood \( \ell(\beta) \) is maximized to find the best-fit parameters:
+     \[
+     \ell(\beta) = -\frac{n}{2} \log(2\pi\sigma^2) - \frac{1}{2\sigma^2} \sum_{i=1}^n (y_i - \mu_i)^2
+     \]
+
+3. **Optimization**:
+   - The optimization of the log-likelihood can be performed using numerical methods such as gradient descent, Newton-Raphson, or quasi-Newton methods like BFGS.
+
+4. **Prediction**:
+   - Once the model parameters \( \beta \) are estimated, predictions for new data can be made using:
+     \[
+     \hat{y} = g^{-1}(X_{\text{new}}\beta)
+     \]
+   - For the normal distribution case (\( p = 0 \)), this simplifies to \( \hat{y} = X_{\text{new}}\beta \) since the identity link can be used.
+
+the underlying target distribution should be normal. 
+The module should be named GPTTweedieRegressor.  
+The init function should include the following parameters:
+power: The power determines the underlying target distribution;
+alpha: Constant that multiplies the L2 penalty term and determines the regularization strength.
+The module must contain a fit function and a predict function. The fit function is used to fit the training data, and the predict function is used to predict the labels for the given features.  
+The fit function accepts X_train, y_train as input and return None where  
+X_train: the features of the train data, which is a numpy array, and the shape of X_train is [N, d]. N is the number of the train data and d is the dimension.  
+y_train: the labels pf the train data,which is a numpy array.  
+The predict function accepts X_test as input and return predictions where  
+X_test: the features of the test data, which is a numpy array, and the shape of X_train is [N, d]. N is the number of the test data and d is the dimension.  
+predctions: the predicted labels for X_test, which is a numpy arrary.  
+You should just return the code for the module, don't return anything else.

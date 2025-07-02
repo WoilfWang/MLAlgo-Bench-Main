@@ -1,0 +1,51 @@
+Given an instruction about a machine learning algorithm, implement the relevant code based on this instruction.
+You should implement the algorithm by using Python, Numpy or Scipy from scratch. You can't use any functions or classes from scikit-learn.
+You only need to implement the algorithm module, and you don't need to generate test cases.
+You should create as many sub-functions or sub-classes as possible to help you implement the entire algorithm.
+Just output the code of the algorithm, don't output anything else.
+
+Instruction:
+
+Implement the naive bayes classifier with python, numpy and scipy. It can handle multi-class classification problems.
+
+The principle of the Naive Bayes classifier is to use Bayes' Theorem to predict the class label \( C \) for a given instance with features \( X = (x_1, x_2, \ldots, x_n) \). Bayes' Theorem is expressed as:
+
+\[ P(C \mid X) = \frac{P(X \mid C) \cdot P(C)}{P(X)} \]
+
+Where:
+- \( P(C \mid X) \) is the posterior probability of class \( C \) given the features \( X \).
+- \( P(X \mid C) \) is the likelihood of the features \( X \) given the class \( C \).
+- \( P(C) \) is the prior probability of class \( C \).
+- \( P(X) \) is the probability of the features \( X \).
+
+### Naive Bayes Assumption
+
+The naive assumption is that the features are conditionally independent given the class label. This allows us to express the likelihood as a product of individual probabilities:
+
+\[ P(X \mid C) = P(x_1 \mid C) \cdot P(x_2 \mid C) \cdot \ldots \cdot P(x_n \mid C) \]
+
+### Algorithmic Flow
+
+1. **Training Phase:**
+   - Calculate the prior probability for each class \( C \):
+     \[ P(C) = \frac{\text{Number of instances in class } C}{\text{Total number of instances}} \]
+   - Calculate the likelihood of each feature given each class. For continuous features, this is often modeled using a Gaussian distribution:
+     \[ P(x_i \mid C) = \frac{1}{\sqrt{2\pi\sigma_C^2}} \exp\left(-\frac{(x_i - \mu_C)^2}{2\sigma_C^2}\right) \]
+     Where \( \mu_C \) and \( \sigma_C^2 \) are the mean and variance of the feature \( x_i \) in class \( C \).
+   - For categorical features, the likelihood is calculated as:
+     \[ P(x_i \mid C) = \frac{\text{Number of instances where } x_i \text{ occurs in class } C}{\text{Total number of instances in class } C} \]
+
+2. **Prediction Phase:**
+   - For a new instance with features \( X = (x_1, x_2, \ldots, x_n) \), calculate the posterior probability for each class:
+     \[ P(C \mid X) \propto P(C) \cdot \prod_{i=1}^{n} P(x_i \mid C) \]
+   - Choose the class with the highest posterior probability as the predicted class for the instance.
+
+The module should be named GPTNaiveBayesClassifier.  
+The module must contain a fit function and a predict function.  
+The fit function accepts X_train, y_train as input and return None where  
+X_train: the features of the train data, which is a numpy array, and the shape of X_train is [N, d]. N is the number of the train data and d is the dimension.  
+y_train: the labels pf the train data,which is a numpy array.  
+The predict function accepts X_test as input and return predictions where  
+X_test: the features of the test data, which is a numpy array, and the shape of X_train is [N, d]. N is the number of the test data and d is the dimension.  
+predctions: the predicted classes for X_test, which is a numpy arrary.  
+You should just return the code for the module, don't return anything else.

@@ -1,0 +1,50 @@
+Given an instruction about a machine learning algorithm, implement the relevant code based on this instruction.
+You should implement the algorithm by using Python, Numpy or Scipy from scratch. You can't use any functions or classes from scikit-learn.
+You only need to implement the algorithm module, and you don't need to generate test cases.
+You should create as many sub-functions or sub-classes as possible to help you implement the entire algorithm.
+Just output the code of the algorithm, don't output anything else.
+
+Instruction:
+
+Implement the Passive Aggressive Regressor with python, numpy and scipy. 
+
+The core idea behind the Passive Aggressive Regressor is to adjust the model only when it makes a prediction error that exceeds a certain threshold. The algorithm aims to find a balance between minimizing the prediction error and keeping the model parameters close to the previous ones to avoid drastic changes.
+
+### Algorithmic Flow
+
+1. **Initialization**: Start with an initial weight vector \( \mathbf{w}_0 \).
+
+2. **For each incoming data point** \( (\mathbf{x}_t, y_t) \):
+   - **Prediction**: Compute the predicted value \( \hat{y}_t = \mathbf{w}_t \cdot \mathbf{x}_t \).
+   - **Loss Calculation**: Calculate the loss using the hinge loss function for regression:
+     \[
+     L(\mathbf{w}_t; (\mathbf{x}_t, y_t)) = \max(0, |y_t - \hat{y}_t| - \epsilon)
+     \]
+     where \( \epsilon \) is a small positive parameter that defines a margin of tolerance for errors.
+   - **Update Rule**: If the loss is greater than zero, update the weight vector \( \mathbf{w}_t \) by solving the following optimization problem:
+     \[
+     \mathbf{w}_{t+1} = \arg\min_{\mathbf{w}} \frac{1}{2} \|\mathbf{w} - \mathbf{w}_t\|^2 + C \cdot L(\mathbf{w}; (\mathbf{x}_t, y_t))
+     \]
+     where \( C \) is a regularization parameter that controls the aggressiveness of the update.
+   - **Closed-form Solution**: The update can be derived to have a closed-form solution:
+     \[
+     \mathbf{w}_{t+1} = \mathbf{w}_t + \tau_t \cdot (y_t - \hat{y}_t) \cdot \mathbf{x}_t
+     \]
+     where \( \tau_t \) is the step size given by:
+     \[
+     \tau_t = \frac{L(\mathbf{w}_t; (\mathbf{x}_t, y_t))}{\|\mathbf{x}_t\|^2 + \frac{1}{2C}}
+     \]
+
+3. **Repeat**: Continue the process for each new data point.
+
+The module should be named GPTPassiveAggressive.  
+The init function should include the following parameters:
+C: Maximum step size (regularization). 
+The module must contain a fit function and a predict function.  
+The fit function accepts X_train and y_train as input and return None where  
+X_train: the features of the train data, which is a numpy array, and the shape of X_train is [N, d]. N is the number of the train data and d is the dimension.  
+y_train: the labels pf the train data,which is a numpy array.   
+The predict function accepts X_test as input and return predictions where  
+X_test: the features of the test data, which is a numpy array, and the shape of X_train is [N, d]. N is the number of the test data and d is the dimension.  
+predctions: the predicted results for X_test, which is a numpy arrary.  
+You should just return the code for the module, don't return anything else.

@@ -1,0 +1,51 @@
+Given an instruction about a machine learning algorithm, implement the relevant code based on this instruction.
+You should implement the algorithm by using Python, Numpy or Scipy from scratch. You can't use any functions or classes from scikit-learn.
+You only need to implement the algorithm module, and you don't need to generate test cases.
+You should create as many sub-functions or sub-classes as possible to help you implement the entire algorithm.
+Just output the code of the algorithm, don't output anything else.
+
+Instruction:
+
+Implement the lasso model fit with least angle regression with python, numpy and scipy. It is a Linear Model trained with an L1 prior as regularizer.
+
+The Lasso aims to minimize the residual sum of squares subject to the sum of the absolute value of the coefficients being less than a constant. Mathematically, this can be expressed as:
+
+\[
+\min_{\beta} \left( \frac{1}{2} \sum_{i=1}^{n} (y_i - X_i \beta)^2 \right) \quad \text{subject to} \quad \sum_{j=1}^{p} |\beta_j| \leq t
+\]
+
+where:
+- \( y_i \) is the response variable.
+- \( X_i \) is the predictor variable.
+- \( \beta \) is the vector of coefficients.
+- \( t \) is a tuning parameter that controls the amount of shrinkage applied to the coefficients.
+
+### Least Angle Regression (LARS)
+
+LARS is an algorithm designed to efficiently solve the Lasso problem. It is particularly useful when the number of predictors \( p \) is much larger than the number of observations \( n \).
+
+#### Algorithmic Flow of LARS for Lasso
+
+1. **Standardization**: Standardize the predictors to have mean zero and unit variance. Center the response variable.
+
+2. **Initialization**: Start with all coefficients \(\beta = 0\). Identify the predictor most correlated with the response.
+
+3. **Direction**: Move the coefficient of this predictor in the direction of its least squares coefficient until another predictor has as much correlation with the current residual.
+
+4. **Equiangular Move**: Move in the direction equiangular between the current predictors until a new predictor enters the active set or one of the coefficients becomes zero.
+
+5. **Update**: Update the active set of predictors and repeat the process until all predictors are included or the desired level of sparsity is achieved.
+
+6. **Regularization Path**: The algorithm provides a piecewise linear path of solutions as a function of the regularization parameter \(\lambda\), which is related to \(t\).
+
+The module should be named GPTLassoLars.  
+The init function should include the following parameters:
+alpha: Constant that multiplies the penalty term.
+The module must contain a fit function and a predict function.  
+The fit function accepts X_train and y_train as input and return None where  
+X_train: the features of the train data, which is a numpy array, and the shape of X_train is [N, d]. N is the number of the train data and d is the dimension.  
+y_train: the labels pf the train data,which is a numpy array.  
+The predict function accepts X_test as input and return predictions where  
+X_test: the features of the test data, which is a numpy array, and the shape of X_test is [N, d]. N is the number of the test data and d is the dimension.  
+predctions: the predicted results for X_test, which is a numpy arrary.  
+You should just return the code for the module, don't return anything else.

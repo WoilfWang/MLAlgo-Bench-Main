@@ -1,0 +1,21 @@
+Given an instruction about a machine learning algorithm, implement the relevant code based on this instruction.
+You should implement the algorithm by using Python, Numpy or Scipy from scratch. You can't use any functions or classes from scikit-learn.
+You only need to implement the algorithm module, and you don't need to generate test cases.
+You should create as many sub-functions or sub-classes as possible to help you implement the entire algorithm.
+Just output the code of the algorithm, don't output anything else.
+
+Instruction:
+
+Implement the ElasticNet regressor with python, numpy and scipy, which is a linear regressor with combined L1 and L2 priors as regularizer.  
+Linear regression with combined L1 and L2 priors as regularizer. Minimizes the objective function: 1 / (2 * n_samples) * ||y - Xw||^2_2 + alpha * l1_ratio * ||w||_1 + 0.5 * alpha * (1 - l1_ratio) * ||w||^2_2.
+alpha: Constant that multiplies the penalty terms;
+l1_ratio: The ElasticNet mixing parameter, with 0 <= l1_ratio <= 1;
+The module should be named GPTElasticNet.  
+The module must contain a fit function and a predict function. The fit function is used to fit the training data, and the predict function is used to predict the labels for the given features.  
+The fit function accepts X_train, y_train as input and return None where  
+X_train: the features of the train data, which is a numpy array, and the shape of X_train is [N, d]. N is the number of the train data and d is the dimension.  
+y_train: the labels pf the train data,which is a numpy array.  
+The predict function accepts X_test as input and return predictions where  
+X_test: the features of the test data, which is a numpy array, and the shape of X_train is [N, d]. N is the number of the test data and d is the dimension.  
+predctions: the predicted labels for X_test, which is a numpy arrary.  
+You should just return the code for the module, don't return anything else.

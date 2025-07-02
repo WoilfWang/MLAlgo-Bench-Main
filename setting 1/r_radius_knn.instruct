@@ -1,0 +1,47 @@
+Given an instruction about a machine learning algorithm, implement the relevant code based on this instruction.
+You should implement the algorithm by using Python, Numpy or Scipy from scratch. You can't use any functions or classes from scikit-learn.
+You only need to implement the algorithm module, and you don't need to generate test cases.
+You should create as many sub-functions or sub-classes as possible to help you implement the entire algorithm.
+Just output the code of the algorithm, don't output anything else.
+
+Instruction:
+
+Implement the radius neighbors regressor with python, numpy and scipy.  
+Regression based on neighbors within a fixed radius. The target is predicted by local interpolation of the targets associated of the nearest neighbors in the training set.
+
+The core idea of the Radius Neighbors Regressor is to predict the target value for a given query point by averaging the target values of all training samples that fall within a specified radius \( r \) from the query point. This approach is particularly useful when the density of data points varies across the feature space, allowing for more flexible and adaptive predictions.
+
+### Algorithmic Flow
+
+1. **Training Phase:**
+   - Store all the training data points and their corresponding target values. There is no explicit training phase as the algorithm is non-parametric and instance-based.
+
+2. **Prediction Phase:**
+   - For a given query point \( x_q \):
+     1. **Distance Calculation:**
+        - Compute the distance between the query point \( x_q \) and each training point \( x_i \). A common distance metric used is the Euclidean distance:
+          \[
+          d(x_q, x_i) = \sqrt{\sum_{j=1}^{n} (x_{qj} - x_{ij})^2}
+          \]
+        where \( n \) is the number of features.
+     2. **Neighbor Selection:**
+        - Identify all training points \( x_i \) such that the distance \( d(x_q, x_i) \leq r \).
+     3. **Prediction:**
+        - If there are neighbors within the radius, compute the predicted value \( \hat{y}_q \) as the average of the target values \( y_i \) of the selected neighbors:
+          \[
+          \hat{y}_q = \frac{1}{N} \sum_{i \in \text{neighbors}} y_i
+          \]
+        where \( N \) is the number of neighbors within the radius.
+        - If no neighbors are found within the radius, a common approach is to use a default value, such as the mean of the entire training set or a specified constant.
+
+The module should be named GPTRadiusNeighborsRegressor.  
+The init function should include the following parameters:
+radius: Range of parameter space to use by default for radius_neighbors queries.
+The module must contain a fit function and a predict function. The fit function is used to fit the training data, and the predict function is used to predict the labels for the given features.  
+The fit function accepts X_train, y_train as input and return None where  
+X_train: the features of the train data, which is a numpy array, and the shape of X_train is [N, d]. N is the number of the train data and d is the dimension.  
+y_train: the labels pf the train data,which is a numpy array.  
+The predict function accepts X_test as input and return predictions where  
+X_test: the features of the test data, which is a numpy array, and the shape of X_train is [N, d]. N is the number of the test data and d is the dimension.  
+predctions: the predicted labels for X_test, which is a numpy arrary.  
+You should just return the code for the module, don't return anything else.

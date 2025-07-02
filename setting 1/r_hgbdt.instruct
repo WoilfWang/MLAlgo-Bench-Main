@@ -1,0 +1,63 @@
+Given an instruction about a machine learning algorithm, implement the relevant code based on this instruction.
+You should implement the algorithm by using Python, Numpy or Scipy from scratch. You can't use any functions or classes from scikit-learn.
+You only need to implement the algorithm module, and you don't need to generate test cases.
+You should create as many sub-functions or sub-classes as possible to help you implement the entire algorithm.
+Just output the code of the algorithm, don't output anything else.
+
+Instruction:
+
+Implement the Histogram-based Gradient Boosting Regression Tree with python, numpy and scipy. This estimator has native support for missing values (NaNs). During training, the tree grower learns at each split point whether samples with missing values should go to the left or right child, based on the potential gain. When predicting, samples with missing values are assigned to the left or right child consequently. If no missing values were encountered for a given feature during training, then samples with missing values are mapped to whichever child has the most samples.  
+This estimator has native support for missing values (NaNs). During training, the tree grower learns at each split point whether samples with missing values should go to the left or right child, based on the potential gain. When predicting, samples with missing values are assigned to the left or right child consequently. If no missing values were encountered for a given feature during training, then samples with missing values are mapped to whichever child has the most samples.
+
+### Algorithmic Flow
+
+1. **Initialization**: Start with an initial model, usually a constant value that minimizes the loss function. For regression, this is often the mean of the target values.
+
+   \[
+   F_0(x) = \arg\min_{\gamma} \sum_{i=1}^{n} L(y_i, \gamma)
+   \]
+
+   where \( L \) is the loss function, \( y_i \) are the target values, and \( \gamma \) is a constant.
+
+2. **Iterative Boosting**:
+   - For each iteration \( m = 1, 2, \ldots, M \):
+     1. **Compute Residuals**: Calculate the pseudo-residuals, which are the negative gradients of the loss function with respect to the current model predictions.
+
+        \[
+        r_{im} = -\left[\frac{\partial L(y_i, F(x_i))}{\partial F(x_i)}\right]_{F(x) = F_{m-1}(x)}
+        \]
+
+     2. **Histogram Construction**: Discretize the feature space into bins (histograms). This involves sorting the feature values and assigning them to discrete bins, which reduces the number of unique values to consider when splitting nodes in the decision tree.
+
+     3. **Fit a Decision Tree**: Use the residuals as the target to fit a decision tree (CART - Classification and Regression Tree). The tree is grown by selecting splits that minimize the residual sum of squares within each node, using the histogrammed data to quickly evaluate potential splits.
+
+     4. **Update Model**: Update the model by adding the new tree, scaled by a learning rate \( \nu \).
+
+        \[
+        F_m(x) = F_{m-1}(x) + \nu \cdot T_m(x)
+        \]
+
+        where \( T_m(x) \) is the prediction from the \( m \)-th tree.
+
+3. **Output the Final Model**: After \( M \) iterations, the final model is the sum of the initial model and all the trees.
+
+   \[
+   F(x) = F_0(x) + \sum_{m=1}^{M} \nu \cdot T_m(x)
+   \]
+
+The base regressor is cart, which you should first implement from scratch. And the loss is suqared error. 
+The module should be named GPTHistGradientBoostingRegressor.  
+The init function should include the following parameters:
+learning_rate: The learning rate, also known as shrinkage. This is used as a multiplicative factor for the leaves values;
+max_iter: The maximum number of iterations of the boosting process, i.e. the maximum number of trees;
+max_leaf_nodes: The maximum number of leaves for each tree;
+max_depth: The maximum depth of each tree. The depth of a tree is the number of edges to go from the root to the deepest leaf. Depth isn’t constrained by default;
+min_samples_leaf: The minimum number of samples per leaf. For small datasets with less than a few hundred samples, it is recommended to lower this value since only very shallow trees would be built.
+The module must contain a fit function and a predict function. The fit function is used to fit the training data, and the predict function is used to predict the labels for the given features.  
+The fit function accepts X_train, y_train as input and return None where  
+X_train: the features of the train data, which is a numpy array, and the shape of X_train is [N, d]. N is the number of the train data and d is the dimension.  
+y_train: the labels of the train data,which is a numpy array.  
+The predict function accepts X_test as input and return predictions where  
+X_test: the features of the test data, which is a numpy array, and the shape of X_train is [N, d]. N is the number of the test data and d is the dimension.  
+predctions: the predicted labels for X_test, which is a numpy arrary.  
+You should just return the code for the module, don't return anything else.

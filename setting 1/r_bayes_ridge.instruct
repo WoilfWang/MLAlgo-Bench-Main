@@ -1,0 +1,76 @@
+Given an instruction about a machine learning algorithm, implement the relevant code based on this instruction.
+You should implement the algorithm by using Python, Numpy or Scipy from scratch. You can't use any functions or classes from scikit-learn.
+You only need to implement the algorithm module, and you don't need to generate test cases.
+You should create as many sub-functions or sub-classes as possible to help you implement the entire algorithm.
+Just output the code of the algorithm, don't output anything else.
+
+Instruction:
+
+Implement the Bayesian ridge regressor with python, numpy and scipy.  
+
+The principle behind Bayesian Ridge Regression is to find a probabilistic model for linear regression that accounts for uncertainty in the parameter estimates. This is achieved by placing a prior distribution over the parameters and updating this prior with data to obtain a posterior distribution.
+
+### Model Formulation
+
+The linear regression model can be expressed as:
+
+\[ y = X \beta + \epsilon \]
+
+where:
+- \( y \) is the vector of observed responses.
+- \( X \) is the design matrix of input features.
+- \( \beta \) is the vector of coefficients to be estimated.
+- \( \epsilon \) is the error term, assumed to be normally distributed with mean 0 and variance \(\sigma^2\).
+
+### Bayesian Approach
+
+1. **Prior Distribution**: Assume a Gaussian prior for the coefficients \(\beta\):
+
+   \[ \beta \sim \mathcal{N}(0, \lambda^{-1} I) \]
+
+   where \(\lambda\) is the precision (inverse of variance) of the prior distribution, and \(I\) is the identity matrix.
+
+2. **Likelihood**: The likelihood of the data given the parameters is also Gaussian:
+
+   \[ p(y | X, \beta, \alpha) = \mathcal{N}(y | X\beta, \alpha^{-1} I) \]
+
+   where \(\alpha\) is the precision of the noise.
+
+3. **Posterior Distribution**: Using Bayes' theorem, the posterior distribution of \(\beta\) given the data is:
+
+   \[ p(\beta | X, y, \alpha, \lambda) \propto p(y | X, \beta, \alpha) \cdot p(\beta | \lambda) \]
+
+   This results in a Gaussian posterior distribution:
+
+   \[ \beta | X, y, \alpha, \lambda \sim \mathcal{N}(\mu, \Sigma) \]
+
+   where:
+   - \(\Sigma = (\alpha X^T X + \lambda I)^{-1}\) is the posterior covariance matrix.
+   - \(\mu = \alpha \Sigma X^T y\) is the posterior mean.
+
+### Algorithmic Flow
+
+1. **Initialization**: Set initial values for \(\alpha\) and \(\lambda\).
+
+2. **Iterative Update**:
+   - Compute the posterior covariance \(\Sigma\) and mean \(\mu\).
+   - Update \(\alpha\) and \(\lambda\) using the evidence approximation (Type-II Maximum Likelihood):
+     - \(\alpha = \frac{N}{\|y - X\mu\|^2 + \text{Tr}(X^T X \Sigma)}\)
+     - \(\lambda = \frac{M}{\|\mu\|^2 + \text{Tr}(\Sigma)}\)
+   - Here, \(N\) is the number of samples and \(M\) is the number of features.
+
+The module should be named GPTBayesRidgeRegressor.  
+The init function should include the following parameters:
+max_iter: Maximum number of iterations;
+alpha_1: Hyper-parameter : shape parameter for the Gamma distribution prior over the alpha parameter;
+alpha_2: Hyper-parameter : inverse scale parameter (rate parameter) for the Gamma distribution prior over the alpha parameter;
+lambda_1: Hyper-parameter : shape parameter for the Gamma distribution prior over the lambda parameter;
+lambda_2: Hyper-parameter : inverse scale parameter (rate parameter) for the Gamma distribution prior over the lambda parameter.
+The module must contain a fit function and a predict function. The fit function is used to fit the training data, and the predict function is used to predict the labels for the given features.  
+The fit function accepts X_train, y_train as input and return None where  
+X_train: the features of the train data, which is a numpy array, and the shape of X_train is [N, d]. N is the number of the train data and d is the dimension.  
+y_train: the labels pf the train data,which is a numpy array.  
+The predict function accepts X_test as input and return predictions where  
+X_test: the features of the test data, which is a numpy array, and the shape of X_train is [N, d]. N is the number of the test data and d is the dimension.  
+predctions: the predicted labels for X_test, which is a numpy arrary.  
+You should just return the code for the module, don't return anything else.

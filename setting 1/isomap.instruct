@@ -1,0 +1,51 @@
+Given an instruction about a machine learning algorithm, implement the relevant code based on this instruction.
+You should implement the algorithm by using Python, Numpy or Scipy from scratch. You can't use any functions or classes from scikit-learn.
+You only need to implement the algorithm module, and you don't need to generate test cases.
+You should create as many sub-functions or sub-classes as possible to help you implement the entire algorithm.
+Just output the code of the algorithm, don't output anything else.
+
+Instruction:
+
+Implement the Isomap algorithm for dimensionality reduction with python, numpy and scipy.
+Non-linear dimensionality reduction through Isometric Mapping. 
+
+The core idea of Isomap is to maintain the geodesic distances between all pairs of data points when mapping the high-dimensional data to a lower-dimensional space. Geodesic distance is the shortest path between two points on a curved surface, which is more appropriate for data lying on a nonlinear manifold.
+
+### Algorithmic Flow
+
+1. **Construct the Neighborhood Graph:**
+   - For each data point, identify its neighbors using either a fixed number of nearest neighbors (k-nearest neighbors) or all points within a certain distance (ε-neighborhood).
+   - Construct a weighted graph \( G = (V, E) \), where each vertex \( v_i \) represents a data point, and an edge \( e_{ij} \) exists if \( v_j \) is a neighbor of \( v_i \). The weight of the edge is the Euclidean distance between the points.
+
+2. **Compute Geodesic Distances:**
+   - Use Dijkstra's or Floyd-Warshall algorithm to compute the shortest paths between all pairs of points in the graph. This approximates the geodesic distances on the manifold.
+   - Let \( D_{ij} \) be the geodesic distance between points \( i \) and \( j \).
+
+3. **Apply Classical MDS:**
+   - Construct a matrix \( \mathbf{B} \) using double centering:
+     \[
+     \mathbf{B} = -\frac{1}{2} \mathbf{H} \mathbf{D}^2 \mathbf{H}
+     \]
+     where \( \mathbf{D}^2 \) is the matrix of squared geodesic distances, and \( \mathbf{H} = \mathbf{I} - \frac{1}{n} \mathbf{1} \mathbf{1}^T \) is the centering matrix.
+   - Perform eigenvalue decomposition on \( \mathbf{B} \):
+     \[
+     \mathbf{B} = \mathbf{V} \mathbf{\Lambda} \mathbf{V}^T
+     \]
+     where \( \mathbf{\Lambda} \) is the diagonal matrix of eigenvalues and \( \mathbf{V} \) is the matrix of eigenvectors.
+
+4. **Dimensionality Reduction:**
+   - Select the top \( d \) eigenvectors corresponding to the largest \( d \) eigenvalues to form the reduced-dimensional embedding:
+     \[
+     \mathbf{Y} = \mathbf{V}_d \mathbf{\Lambda}_d^{1/2}
+     \]
+     where \( \mathbf{V}_d \) contains the top \( d \) eigenvectors and \( \mathbf{\Lambda}_d \) is the diagonal matrix of the top \( d \) eigenvalues.
+
+The module should be named GPTIsomap.
+The init function should include the following parameters:
+n_neighbors: Number of neighbors to consider for each point;
+n_components: Number of coordinates for the manifold.
+The module must contain a fit_transform function, which is used for fitting data and performing dimensionality reduction transformations.
+The fit_transform function accepts X as input and return reduced_X where
+X: X is the features of the data, which is a numpy array and it's shape is [N, d]. N is the number of the train data and d is the dimension.
+reduced_X: reduced_X is the reduced features after dimensionality reduction. The shape should be [N, low_d], where N is the num of the data and low_d is the reduced dimension.
+You should just return the code for the module, don't return anything else.

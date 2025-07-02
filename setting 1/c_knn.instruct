@@ -1,0 +1,47 @@
+Given an instruction about a machine learning algorithm, implement the relevant code based on this instruction.
+You should implement the algorithm by using Python, Numpy or Scipy from scratch. You can't use any functions or classes from scikit-learn.
+You only need to implement the algorithm module, and you don't need to generate test cases.
+You should create as many sub-functions or sub-classes as possible to help you implement the entire algorithm.
+Just output the code of the algorithm, don't output anything else.
+
+Instruction:
+
+Implement the k-Nearest neighbor classifier with python, numpy and scipy. It can handle multi-class classification problems.  
+
+The fundamental idea behind k-NN is that similar data points exist in close proximity to each other. Therefore, the class of a given data point can be inferred from the classes of its nearest neighbors. The algorithm assumes that data points that are close to each other in the feature space are likely to belong to the same class.
+
+### Algorithmic Flow:
+1. **Choose the Number of Neighbors (k)**: 
+   - Select an integer k, which is the number of nearest neighbors to consider for classification. The choice of k affects the decision boundary and the model's performance.
+
+2. **Compute Distance**:
+   - For a given test instance \( x \), compute the distance between \( x \) and all training instances. For Euclidean distance, the formula is:
+     \[
+     d(x, x_i) = \sqrt{\sum_{j=1}^{n} (x_j - x_{ij})^2}
+     \]
+     where \( x \) is the test instance, \( x_i \) is a training instance, and \( n \) is the number of features.
+
+3. **Identify Nearest Neighbors**:
+   - Sort the distances and identify the k training instances that are closest to the test instance.
+
+4. **Vote for Class Labels**:
+   - For classification, each of the k neighbors "votes" for their class label. The class with the majority votes is assigned to the test instance. Mathematically, this can be expressed as:
+     \[
+     \hat{y} = \arg\max_{c} \sum_{i=1}^{k} \mathbb{I}(y_i = c)
+     \]
+     where \( \mathbb{I} \) is the indicator function that returns 1 if \( y_i = c \) and 0 otherwise, and \( y_i \) is the class label of the i-th nearest neighbor.
+
+5. **Return the Predicted Class**:
+   - The predicted class \( \hat{y} \) is returned as the output for the test instance.
+
+The module should be named GPTKNN.  
+The init function should include the following parameters:
+n_neighbors: Number of neighbors to use by default for kneighbors queries.
+The module must contain a fit function and a predict function.  
+The fit function accepts X_train, y_train as input and return None where  
+X_train: the features of the train data, which is a numpy array, and the shape of X_train is [N, d]. N is the number of the train data and d is the dimension.  
+y_train: the labels pf the train data,which is a numpy array.  
+The predict function accepts X_test as input and return predictions where  
+X_test: the features of the test data, which is a numpy array, and the shape of X_train is [N, d]. N is the number of the test data and d is the dimension.  
+predctions: the predicted classes for X_test, which is a numpy arrary.  
+You should just return the code for the module, don't return anything else.

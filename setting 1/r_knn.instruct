@@ -1,0 +1,47 @@
+Given an instruction about a machine learning algorithm, implement the relevant code based on this instruction.
+You should implement the algorithm by using Python, Numpy or Scipy from scratch. You can't use any functions or classes from scikit-learn.
+You only need to implement the algorithm module, and you don't need to generate test cases.
+You should create as many sub-functions or sub-classes as possible to help you implement the entire algorithm.
+Just output the code of the algorithm, don't output anything else.
+
+Instruction:
+
+Implement k-nearest neighbors regressor model with python, numpy and scipy.  
+The target is predicted by local interpolation of the targets associated of the nearest neighbors in the training set. 
+
+The k-NN regressor operates on the assumption that similar input features will have similar output values. It uses the proximity of data points in the feature space to make predictions, leveraging the idea that nearby points in the feature space are likely to have similar responses.
+
+### Algorithmic Flow:
+
+1. **Data Preparation:**
+   - **Training Data:** Consists of feature vectors \( X = \{x_1, x_2, \ldots, x_n\} \) and corresponding target values \( Y = \{y_1, y_2, \ldots, y_n\} \).
+   - **Normalization (Optional):** Normalize the feature vectors to ensure that all features contribute equally to the distance computation.
+
+2. **Distance Metric:**
+   - Choose a distance metric to measure the similarity between data points. The most common choice is the Euclidean distance:
+     \[
+     d(x_i, x_j) = \sqrt{\sum_{m=1}^{M} (x_{i,m} - x_{j,m})^2}
+     \]
+     where \( x_{i,m} \) and \( x_{j,m} \) are the \( m \)-th features of the \( i \)-th and \( j \)-th data points, respectively.
+
+3. **Prediction for a New Data Point \( x \):**
+   - **Compute Distances:** Calculate the distance between the new data point \( x \) and all points in the training set.
+   - **Identify Neighbors:** Select the \( k \) training points that have the smallest distances to \( x \). These are the k-nearest neighbors.
+   - **Aggregate Output:** Compute the predicted output \( \hat{y} \) as the average of the target values of the k-nearest neighbors:
+     \[
+     \hat{y} = \frac{1}{k} \sum_{i=1}^{k} y_i
+     \]
+     where \( y_i \) are the target values of the k-nearest neighbors.
+
+The module should be named GPTKNN.
+The init function should include the following parameters:
+n_neighbors: Number of neighbors to use by default for kneighbors queries.
+The module must contain a fit function and a predict function. The fit function is used to fit the training data, and the predict function is used to predict the labels for the given features.  
+The fit function accepts X_train, y_train as input and return None where  
+X_train: the features of the train data, which is a numpy array, and the shape of X_train is [N, d]. N is the number of the train data and d is the dimension.  
+y_train: the labels of the train data,which is a numpy array.  
+The predict function accepts X_test as input and return predictions where  
+X_test: the features of the test data, which is a numpy array, and the shape of X_train is [N, d]. N is the number of the test data and d is the dimension.  
+predctions: the predicted labels for X_test, which is a numpy arrary.  
+You should just return the code for the module, don't return anything else.
+

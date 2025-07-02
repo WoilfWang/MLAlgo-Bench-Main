@@ -1,0 +1,54 @@
+Given an instruction about a machine learning algorithm, implement the relevant code based on this instruction.
+You should implement the algorithm by using Python, Numpy or Scipy from scratch. You can't use any functions or classes from scikit-learn.
+You only need to implement the algorithm module, and you don't need to generate test cases.
+You should create as many sub-functions or sub-classes as possible to help you implement the entire algorithm.
+Just output the code of the algorithm, don't output anything else.
+
+Instruction:
+
+Implement the extra-trees regressor with python, numpy and scipy. 
+Extra-trees differ from classic decision trees in the way they are built. When looking for the best split to separate the samples of a node into two groups, random splits are drawn for each of the `max_features` randomly selected features and the best split among those is chosen. When `max_features` is set 1, this amounts to building a totally random decision tree. 
+The criterion should be squared error. 
+
+### Algorithmic Flow
+
+1. **Initialization**: 
+   - Let \( N \) be the number of trees in the ensemble.
+   - Let \( M \) be the number of features in the dataset.
+   - Let \( K \) be the number of randomly selected features to consider for each split.
+
+2. **Tree Construction**:
+   For each tree \( t \) in the ensemble:
+   - Use the entire training dataset (no bootstrapping).
+   - For each node in the tree:
+     - Randomly select \( K \) features from the \( M \) available features.
+     - For each selected feature, randomly choose a split point.
+     - Calculate the squared error for each potential split:
+       \[
+       \text{Squared Error} = \sum_{i=1}^{n_L} (y_i - \bar{y}_L)^2 + \sum_{i=1}^{n_R} (y_i - \bar{y}_R)^2
+       \]
+       where \( n_L \) and \( n_R \) are the number of samples in the left and right child nodes, respectively, and \( \bar{y}_L \) and \( \bar{y}_R \) are the mean target values of the samples in the left and right nodes.
+     - Select the split that minimizes the squared error.
+     - Repeat the process recursively for each child node until a stopping criterion is met (e.g., maximum depth, minimum samples per leaf).
+
+3. **Prediction**:
+   - For a new input sample, pass it through each of the \( N \) trees to obtain individual predictions.
+   - Aggregate the predictions, typically by averaging, to produce the final output:
+     \[
+     \hat{y} = \frac{1}{N} \sum_{t=1}^{N} \hat{y}_t
+     \]
+     where \( \hat{y}_t \) is the prediction from the \( t \)-th tree.
+
+The module should be named GPTExtraTreeRegressor.  
+The init function should include the following parameters:
+max_depth: The maximum depth of the tree. If None, then nodes are expanded until all leaves are pure or until all leaves contain less than min_samples_split samples;
+min_samples_split: The minimum number of samples required to split an internal node;
+min_samples_leaf: The minimum number of samples required to be at a leaf node;
+The module must contain a fit function and a predict function. The fit function is used to fit the training data, and the predict function is used to predict the labels for the given features.  
+The fit function accepts X_train, y_train as input and return None where  
+X_train: the features of the train data, which is a numpy array, and the shape of X_train is [N, d]. N is the number of the train data and d is the dimension.  
+y_train: the labels pf the train data,which is a numpy array.  
+The predict function accepts X_test as input and return predictions where  
+X_test: the features of the test data, which is a numpy array, and the shape of X_train is [N, d]. N is the number of the test data and d is the dimension.  
+predctions: the predicted labels for X_test, which is a numpy arrary.  
+You should just return the code for the module, don't return anything else.

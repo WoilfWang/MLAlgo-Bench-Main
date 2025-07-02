@@ -1,0 +1,46 @@
+Given an instruction about a machine learning algorithm, implement the relevant code based on this instruction.
+You should implement the algorithm by using Python, Numpy or Scipy from scratch. You can't use any functions or classes from scikit-learn.
+You only need to implement the algorithm module, and you don't need to generate test cases.
+You should create as many sub-functions or sub-classes as possible to help you implement the entire algorithm.
+Just output the code of the algorithm, don't output anything else.
+
+Instruction:
+
+Implement the mini batch k-means clustering algorithm with python, numpy and scipy.  
+
+The primary goal of K-means clustering is to partition a dataset into \( K \) distinct, non-overlapping clusters. Each cluster is represented by its centroid, and the objective is to minimize the variance within each cluster. The mini-batch K-means algorithm follows the same principle but optimizes the process by using mini-batches.
+
+### Algorithmic Flow
+
+1. **Initialization**:
+   - Select \( K \) initial centroids randomly from the dataset. These centroids can be chosen using methods like random selection or K-means++ for better initial placement.
+
+2. **Mini-batch Selection**:
+   - Randomly select a mini-batch of data points from the dataset. The size of the mini-batch is a hyperparameter that can be tuned based on the dataset size and computational resources.
+
+3. **Assignment Step**:
+   - For each data point \( x_i \) in the mini-batch, assign it to the nearest centroid \( \mu_j \). This is done by calculating the Euclidean distance:
+     \[
+     \text{argmin}_j \| x_i - \mu_j \|^2
+     \]
+   - Assign each data point to the cluster with the nearest centroid.
+
+4. **Update Step**:
+   - Update the centroids based on the assigned data points in the mini-batch. The update rule for each centroid \( \mu_j \) is:
+     \[
+     \mu_j = \mu_j + \eta (x_i - \mu_j)
+     \]
+     where \( \eta \) is the learning rate, typically set as \( \frac{1}{t} \) where \( t \) is the iteration number. This update is a form of stochastic gradient descent.
+
+5. **Repeat**:
+   - Repeat the mini-batch selection, assignment, and update steps for a fixed number of iterations or until convergence. Convergence can be defined as minimal changes in the centroids or a maximum number of iterations.
+
+The module should be named GPTMinibatchKmeans.  
+The init function should include the following parameters:
+n_clusters: The number of clusters to form as well as the number of centroids to generate;
+batch_size: Size of the mini batches.
+The module must contain a fit_predict function.  
+The fit_predict function accepts X as input and return labels where  
+X: X is the features of the data, which is a numpy array and it's shape is [N, d]. N is the number of the train data and d is the dimension.  
+labels: A numpy array of shape (n_samples,) containing the index of the cluster each sample belongs to.  
+You should just return the code for the module, don't return anything else.

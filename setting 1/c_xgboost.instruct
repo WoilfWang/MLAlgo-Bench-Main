@@ -1,0 +1,61 @@
+Given an instruction about a machine learning algorithm, implement the relevant code based on this instruction.
+You should implement the algorithm by using Python, Numpy or Scipy from scratch. You can't use any functions or classes from scikit-learn.
+You only need to implement the algorithm module, and you don't need to generate test cases.
+You should create as many sub-functions or sub-classes as possible to help you implement the entire algorithm.
+Just output the code of the algorithm, don't output anything else.
+
+Instruction:
+
+Implement the Xgboost classifier with python, numpy and scipy. It can handle multi-class classification problems. 
+
+XGBoost is based on the principle of boosting, which involves combining the predictions of several base learners to improve overall model performance. The base learners in XGBoost are typically decision trees. The algorithm builds these trees sequentially, with each new tree attempting to correct the errors made by the previous ones.
+
+### Algorithmic Flow
+
+1. **Initialization**: Start with an initial prediction, usually the mean of the target values for regression or the log odds for classification.
+
+2. **Iterative Boosting**:
+   - For each iteration \( t \):
+     - Compute the pseudo-residuals: These are the gradients of the loss function with respect to the predictions. For a given data point \( i \), the pseudo-residual \( r_i^{(t)} \) is calculated as:
+       \[
+       r_i^{(t)} = -\frac{\partial L(y_i, \hat{y}_i^{(t-1)})}{\partial \hat{y}_i^{(t-1)}}
+       \]
+       where \( L \) is the loss function, \( y_i \) is the true label, and \( \hat{y}_i^{(t-1)} \) is the prediction from the previous iteration.
+
+     - Fit a decision tree to the pseudo-residuals: This tree is used to predict the residuals, effectively learning the errors of the previous model.
+
+     - Update the model: The predictions are updated by adding the scaled predictions of the new tree:
+       \[
+       \hat{y}_i^{(t)} = \hat{y}_i^{(t-1)} + \eta \cdot f_t(x_i)
+       \]
+       where \( \eta \) is the learning rate, and \( f_t(x_i) \) is the prediction from the new tree.
+
+3. **Regularization**: XGBoost includes regularization terms in its objective function to prevent overfitting. The regularized objective function is:
+   \[
+   \text{Obj}(t) = \sum_{i=1}^{n} L(y_i, \hat{y}_i^{(t)}) + \sum_{k=1}^{T} \Omega(f_k)
+   \]
+   where \( \Omega(f_k) = \gamma T + \frac{1}{2} \lambda \sum_{j=1}^{T} w_j^2 \) is the regularization term, \( T \) is the number of leaves, \( \gamma \) is the complexity parameter, and \( \lambda \) is the L2 regularization term on leaf weights.
+
+4. **Stopping Criteria**: The algorithm continues to add trees until a stopping criterion is met, such as a maximum number of trees or a minimum improvement in the loss function.
+
+### Mathematical Derivations
+
+XGBoost uses a second-order Taylor expansion to approximate the loss function, which allows it to efficiently compute the optimal weights for the leaves of each tree. The expansion is given by:
+\[
+L(y_i, \hat{y}_i^{(t)}) \approx L(y_i, \hat{y}_i^{(t-1)}) + g_i \cdot f_t(x_i) + \frac{1}{2} h_i \cdot f_t(x_i)^2
+\]
+where \( g_i \) and \( h_i \) are the first and second derivatives of the loss function with respect to the prediction.
+
+The module should be named GPTXGboostClassifier.  
+The module must contain a fit function and a predict function.  
+The init function should include the following parameters:
+learning_rate: The learning rate, which controls the contribution of each tree to the model;
+n_estimators: The number of boosting rounds or trees to train;
+max_depth: The maximum depth of the trees, controlling the model complexity and preventing overfitting
+The fit function accepts X_train, y_train as input and return None where  
+X_train: the features of the train data, which is a numpy array, and the shape of X_train is [N, d]. N is the number of the train data and d is the dimension.  
+y_train: the labels pf the train data,which is a numpy array.  
+The predict function accepts X_test as input and return predictions where  
+X_test: the features of the test data, which is a numpy array, and the shape of X_train is [N, d]. N is the number of the test data and d is the dimension.  
+predctions: the predicted classes for X_test, which is a numpy arrary.  
+You should just return the code for the module, don't return anything else.

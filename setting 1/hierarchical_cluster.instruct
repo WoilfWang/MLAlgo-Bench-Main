@@ -1,0 +1,52 @@
+Given an instruction about a machine learning algorithm, implement the relevant code based on this instruction.
+You should implement the algorithm by using Python, Numpy or Scipy from scratch. You can't use any functions or classes from scikit-learn.
+You only need to implement the algorithm module, and you don't need to generate test cases.
+You should create as many sub-functions or sub-classes as possible to help you implement the entire algorithm.
+Just output the code of the algorithm, don't output anything else.
+
+Instruction:
+
+Implement the hierarchical clustering algorithm with python, numpy and scipy.  
+
+Hierarchical clustering can be divided into two main types:
+
+1. **Agglomerative (Bottom-Up) Approach**: This is the most common type, where each data point starts in its own cluster, and pairs of clusters are merged as one moves up the hierarchy.
+
+2. **Divisive (Top-Down) Approach**: This approach starts with all data points in a single cluster and splits them into smaller clusters.
+
+### Algorithmic Flow (Agglomerative Approach)
+
+1. **Initialization**: Start with \( n \) clusters, each containing a single data point. The distance between each pair of clusters is calculated using a chosen distance metric (e.g., Euclidean distance).
+
+2. **Distance Calculation**: Compute the distance between each pair of clusters. Common methods include:
+   - **Single Linkage**: \( d(A, B) = \min \{d(x, y) : x \in A, y \in B\} \)
+   - **Complete Linkage**: \( d(A, B) = \max \{d(x, y) : x \in A, y \in B\} \)
+   - **Average Linkage**: \( d(A, B) = \frac{1}{|A||B|} \sum_{x \in A} \sum_{y \in B} d(x, y) \)
+   - **Centroid Linkage**: \( d(A, B) = ||c_A - c_B|| \), where \( c_A \) and \( c_B \) are the centroids of clusters \( A \) and \( B \).
+
+3. **Merge Clusters**: Identify the pair of clusters with the smallest distance and merge them into a single cluster.
+
+4. **Update Distances**: Recalculate the distances between the new cluster and each of the old clusters.
+
+5. **Repeat**: Repeat steps 3 and 4 until all data points are in a single cluster or until a stopping criterion is met (e.g., a predefined number of clusters).
+
+6. **Dendrogram Construction**: As clusters are merged, record the sequence of merges and the distances at which they occur to construct a dendrogram.
+
+### Mathematical Derivation
+
+The hierarchical clustering process can be mathematically represented using a distance matrix \( D \), where each element \( d_{ij} \) represents the distance between the \( i \)-th and \( j \)-th clusters. The algorithm iteratively updates this matrix as clusters are merged.
+
+For example, in single linkage, the update rule for the distance matrix after merging clusters \( A \) and \( B \) into a new cluster \( C \) is:
+
+\[ d(C, X) = \min(d(A, X), d(B, X)) \]
+
+where \( X \) is any other cluster.
+
+The module should be named GPTHierarchicalCluster.  
+The init function should include the following parameters:
+n_clusters: The number of clusters to find. 
+The module must contain a fit_predict function.  
+The fit_predict function accepts X as input and return labels where  
+X: X is the features of the data, which is a numpy array and it's shape is [N, d]. N is the number of the train data and d is the dimension.  
+labels: A numpy array of shape (n_samples,) containing the index of the cluster each sample belongs to.  
+You should just return the code for the module, don't return anything else.
