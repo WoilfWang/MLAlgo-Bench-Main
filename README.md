@@ -12,9 +12,9 @@ It is unique in focusing on the challenges of interpreting intricate human instr
 
 ## Usage
 
-#### Setting 1
+### Setting 1
 
-##### Traditional ML Algorithms
+#### Traditional ML Algorithms
 
 If you want to evaluate the ability of LLMs to generate code for **traditional machine learning algorithms**, you should first generation the corresponding code. 
 
@@ -34,7 +34,7 @@ After all the code has been generated, run the evaluation script to assess the g
 sh run_evaluation.sh
 ```
 
-##### Deep Learning Algorithms
+#### Deep Learning Algorithms
 
 Similarly, after you finish modifying the generated code in `setting 1/dl/generation.py`, you first need to generate the code corresponding to each algorithm.
 
@@ -51,7 +51,7 @@ Finial, run the evaluation script to assess the generated code.
 sh run_evalution.sh llm
 ```
 
-#### Setting 2
+### Setting 2
 
 First, modify the function in `/setting2/generate.py` that generates code, so it produces the code corresponding to all tasks.
 
