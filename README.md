@@ -4,8 +4,8 @@ This is the official repo of the EMNLP2025 findings paper:  **MLAlgo-Bench: Can 
 
 MLAlgo-Bench is a novel benchmark designed to evaluate whether LLMs can autonomously generate ML code for sophisticated, human-designed algorithms or solutions. It includes two challenging tasks:
 
-1. Generating code for machine learning algorithms, including both traditional ML and modern deep learning methods.
-2. Providing solution sketches and writing ML code for practical tasks such as Kaggle competitions.
+1. Setting1: Generating code for machine learning algorithms, including both traditional ML and modern deep learning methods.
+2. Setting2: Providing solution sketches and writing ML code for practical tasks such as Kaggle competitions.
 
 It is unique in focusing on the challenges of interpreting intricate human instructions and producing multi-step, high-complexity code, offering a rigorous test for current Large Language Model (LLM) capabilities.
 
