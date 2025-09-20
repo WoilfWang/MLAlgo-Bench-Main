@@ -1,0 +1,64 @@
+Implement the logistic regression classifier based on the SGD algorithm with python, numpy and scipy. It can handle multi-class classification problems. 
+
+The logistic function is defined as:
+
+\[ 
+\sigma(z) = \frac{1}{1 + e^{-z}} 
+\]
+
+where \( z = \mathbf{w}^T \mathbf{x} + b \), \( \mathbf{w} \) is the weight vector, \( \mathbf{x} \) is the input feature vector, and \( b \) is the bias term. The output of the logistic function is a value between 0 and 1, which can be interpreted as a probability.
+
+The logistic regression model predicts the probability \( P(y=1|\mathbf{x}) \) as:
+
+\[ 
+P(y=1|\mathbf{x}) = \sigma(\mathbf{w}^T \mathbf{x} + b) 
+\]
+
+### Loss Function
+
+The loss function used in logistic regression is the log loss (also known as cross-entropy loss), which is defined as:
+
+\[ 
+L(y, \hat{y}) = -\left[ y \log(\hat{y}) + (1-y) \log(1-\hat{y}) \right] 
+\]
+
+where \( y \) is the true label and \( \hat{y} \) is the predicted probability.
+
+#### Algorithmic Flow of SGD for Logistic Regression
+
+1. **Initialize Parameters**: Start with random values for the weight vector \( \mathbf{w} \) and bias \( b \).
+
+2. **Iterate Over Data**: For each training example \( (\mathbf{x}_i, y_i) \):
+
+   - **Compute Prediction**: Calculate the predicted probability:
+     \[
+     \hat{y}_i = \sigma(\mathbf{w}^T \mathbf{x}_i + b)
+     \]
+
+   - **Compute Gradient**: Calculate the gradient of the loss with respect to the parameters:
+     \[
+     \nabla_{\mathbf{w}} = (\hat{y}_i - y_i) \mathbf{x}_i
+     \]
+     \[
+     \nabla_{b} = \hat{y}_i - y_i
+     \]
+
+   - **Update Parameters**: Update the parameters using the gradients and a learning rate \( \eta \):
+     \[
+     \mathbf{w} = \mathbf{w} - \eta \nabla_{\mathbf{w}}
+     \]
+     \[
+     b = b - \eta \nabla_{b}
+     \]
+
+3. **Repeat**: Continue iterating over the dataset for a specified number of epochs or until convergence.
+
+The module should be named GPTSgdLR.  
+The module must contain a fit function and a predict function.  
+The fit function accepts X_train, y_train as input and return None where  
+X_train: the features of the train data, which is a numpy array, and the shape of X_train is [N, d]. N is the number of the train data and d is the dimension.  
+y_train: the labels pf the train data,which is a numpy array.  
+The predict function accepts X_test as input and return predictions where  
+X_test: the features of the test data, which is a numpy array, and the shape of X_train is [N, d]. N is the number of the test data and d is the dimension.  
+predctions: the predicted classes for X_test, which is a numpy arrary.  
+You should just return the code for the module, don't return anything else.

@@ -1,0 +1,63 @@
+Implement the least angle regression model with python, numpy and scipy.  
+
+The principle behind LARS is to move iteratively towards the least squares solution by taking the "least angle" path. It starts with all coefficients set to zero and identifies the predictor most correlated with the response. Instead of fully fitting this predictor, LARS moves the coefficient of this predictor in the direction of its least squares solution until another predictor has as much correlation with the current residuals. At this point, LARS adjusts the coefficients of both predictors in a way that maintains their equal correlation with the residuals, and the process continues.
+
+### Algorithmic Flow
+
+1. **Initialization**:
+   - Start with all coefficients \(\beta = 0\).
+   - Compute the correlation of each predictor with the response vector \(y\).
+
+2. **Identify the Most Correlated Predictor**:
+   - Select the predictor \(X_j\) that has the highest absolute correlation with the response \(y\).
+
+3. **Move Along the Least Angle Path**:
+   - Move the coefficient \(\beta_j\) in the direction of the least squares solution for \(X_j\).
+   - Continue until another predictor \(X_k\) has the same correlation with the current residuals as \(X_j\).
+
+4. **Equiangular Update**:
+   - Adjust the coefficients of both \(X_j\) and \(X_k\) such that their correlations with the residuals remain equal.
+   - This involves moving in the direction of the equiangular vector formed by \(X_j\) and \(X_k\).
+
+5. **Repeat**:
+   - Continue this process, adding predictors to the active set and adjusting their coefficients until all predictors are included or the desired number of predictors is reached.
+
+### Mathematical Formulation
+
+1. **Correlation Calculation**:
+   \[
+   c_j = X_j^T y
+   \]
+   where \(c_j\) is the correlation of predictor \(X_j\) with the response \(y\).
+
+2. **Direction Vector**:
+   - For the active set \(A\), compute the equiangular direction vector \(u_A\):
+   \[
+   u_A = X_A (X_A^T X_A)^{-1} 1_A
+   \]
+   where \(1_A\) is a vector of ones of length equal to the number of active predictors.
+
+3. **Step Size**:
+   - Compute the step size \(\gamma\) to the next breakpoint:
+   \[
+   \gamma = \min \left\{ \frac{c_j - c_k}{1 - a_k} \right\}
+   \]
+   where \(a_k\) is the angle between the current direction and the new predictor.
+
+4. **Coefficient Update**:
+   - Update the coefficients for the active predictors:
+   \[
+   \beta_A = \beta_A + \gamma u_A
+   \]
+
+LARS continues this process until all predictors are included or a stopping criterion is met. The result is a path of solutions that can be used to select a model based on criteria such as cross-validation or information criteria.
+
+The module should be named GPTLars.  
+The module must contain a fit function and a predict function.  
+The fit function accepts X_train and y_train as input and return None where  
+X_train: the features of the train data, which is a numpy array, and the shape of X_train is [N, d]. N is the number of the train data and d is the dimension.  
+y_train: the labels of the train data,which is a numpy array.  
+The predict function accepts X_test as input and return predictions where  
+X_test: the features of the test data, which is a numpy array, and the shape of X_test is [N, d]. N is the number of the test data and d is the dimension.  
+predctions: the predicted results for X_test, which is a numpy arrary.  
+You should just return the code for the module, don't return anything else.

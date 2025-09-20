@@ -1,0 +1,32 @@
+Implement a DBSCAN algorithm with python, numpy and scipy.  
+
+DBSCAN groups together closely packed points by identifying points that are in crowded regions and marking as outliers the points that lie alone in low-density regions. The fundamental concepts in DBSCAN are "core points," "border points," and "noise."
+
+- **Core Points**: A point is considered a core point if at least a minimum number of points (`MinPts`) are within a given radius (`ε`, epsilon) from it.
+- **Border Points**: A point is considered a border point if it is not a core point but is in the neighborhood of a core point.
+- **Noise**: A point is considered noise if it is neither a core point nor a border point.
+
+### Algorithmic Flow of DBSCAN
+
+1. **Parameter Selection**: Choose the parameters `ε` (epsilon) and `MinPts`. Epsilon defines the radius of the neighborhood around a point, and MinPts specifies the minimum number of points required to form a dense region (i.e., to qualify a point as a core point).
+
+2. **Neighborhood Search**: For each point in the dataset, find all points within the `ε`-neighborhood of the point.
+
+3. **Core Point Identification**: A point is marked as a core point if the number of points within its `ε`-neighborhood is at least `MinPts`.
+
+4. **Cluster Formation**:
+   - Start with a random unvisited core point and create a new cluster, then iteratively add all directly density-reachable points to the cluster.
+   - For each new point added to the cluster, check if it is a core point. If yes, add all points that are density-reachable from it to the cluster.
+   - Continue this process until no new points can be added to the cluster.
+
+5. **Process Next Point**: Move to the next unvisited point in the dataset, and repeat the process until all points are either classified into clusters or marked as noise.
+
+The module should be named GPTDBSCAN.  
+The init function should include the following parameters:
+eps: The maximum distance between two samples for one to be considered as in the neighborhood of the other. This is not a maximum bound on the distances of points within a cluster. This is the most important DBSCAN parameter to choose appropriately for your data set and distance function;
+min_samples: The number of samples (or total weight) in a neighborhood for a point to be considered as a core point. This includes the point itself. If min_samples is set to a higher value, DBSCAN will find denser clusters, whereas if it is set to a lower value, the found clusters will be more sparse.
+The module must contain a fit_predict function.  
+The fit_predict function accepts X as input and return labels where  
+X: X is the features of the data, which is a numpy array and it's shape is [N, d]. N is the number of the train data and d is the dimension.  
+labels: A numpy array of shape (n_samples,) containing the index of the cluster each sample belongs to.  
+You should just return the code for the module, don't return anything else.

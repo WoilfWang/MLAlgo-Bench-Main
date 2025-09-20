@@ -1,0 +1,53 @@
+Implement the spectral biclustering algorithm with python, numpy and scipy. 
+Partitions rows and columns under the assumption that the data has an underlying checkerboard structure. For instance, if there are two row partitions and three column partitions, each row will belong to three biclusters, and each column will belong to two biclusters. The outer product of the corresponding row and column label vectors gives this checkerboard structure.  
+
+### Principle of Spectral Biclustering
+
+The principle behind spectral biclustering is to use spectral (eigenvalue) methods to reorganize the data matrix such that the rows and columns that are part of the same bicluster are grouped together. This is achieved by analyzing the singular value decomposition (SVD) of the data matrix. The spectral approach is based on the insight that the singular vectors corresponding to the largest singular values of a matrix provide the best low-rank approximation of the matrix, capturing the most significant structures.
+
+### Algorithmic Flow
+
+1. **Data Matrix Normalization**: The first step involves normalizing the data matrix \( A \) to make the rows and columns more comparable. One common approach is to subtract the mean and divide by the standard deviation of each row and column.
+
+2. **Matrix Decomposition**:
+   - Compute the Singular Value Decomposition (SVD) of the normalized matrix \( A \). The SVD of \( A \) is given by:
+     \[
+     A = U \Sigma V^T
+     \]
+     where \( U \) and \( V \) are left and right singular vectors, and \( \Sigma \) is a diagonal matrix of singular values.
+   
+3. **Selection of Singular Values and Vectors**:
+   - Select the top \( k \) singular values and their corresponding singular vectors. The choice of \( k \) depends on the desired number of biclusters and the amount of variance one wishes to capture.
+   - These vectors will be used to form the biclusters.
+
+4. **Bicluster Formation**:
+   - Use the selected singular vectors to transform the rows and columns of \( A \). This transformation rearranges the rows and columns so that similar rows and columns, as determined by the spectral properties, are grouped together.
+   - Specifically, rows are grouped based on their coordinates in the space spanned by the right singular vectors \( V \), and columns are grouped based on their coordinates in the space spanned by the left singular vectors \( U \).
+
+5. **Extraction of Biclusters**:
+   - After transformation, the matrix \( A \) is partitioned into submatrices (biclusters), where each bicluster contains rows and columns that are more similar to each other than to those in other biclusters.
+   - The actual extraction can be done using various heuristic or optimization techniques to maximize some bicluster quality criterion, such as variance explained or internal coherence.
+
+6. **Post-processing**:
+   - Finally, the biclusters can be refined and analyzed to ensure they are meaningful and robust. This might involve statistical tests, validation against known classifications, or iterative refinement.
+
+### Mathematical Formulas and Derivations
+
+The key mathematical concept in spectral biclustering is the use of SVD, which decomposes the matrix \( A \) into:
+\[
+A = U \Sigma V^T
+\]
+- \( U \) (an \( m \times m \) matrix) contains the left singular vectors.
+- \( \Sigma \) (an \( m \times n \) diagonal matrix) contains the singular values.
+- \( V^T \) (an \( n \times n \) matrix) contains the right singular vectors.
+
+The columns of \( U \) and \( V \) that correspond to the largest values in \( \Sigma \) represent the strongest patterns in the data matrix, and these are used to guide the biclustering.
+
+The module should be named GPTSpectralBiClustering.  
+The init function should include the following parameters:
+n_clusters: The number of row and column clusters in the checkerboard structure.
+The module must contain a fit_predict function.  
+The fit_predict function accepts X as input and return labels where  
+X: X is the features of the data, which is a numpy array and it's shape is [N, d]. N is the number of the train data and d is the dimension.  
+labels: A numpy array of shape (n_samples,) containing the index of the cluster each sample belongs to.  
+You should just return the code for the module, don't return anything else.

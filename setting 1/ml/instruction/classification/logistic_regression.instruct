@@ -1,0 +1,51 @@
+Implement logictis regression model with python, numpy and scipy. It can handle multi-class classification problems.  
+
+The principle of logistic regression is to model the probability that a given input point belongs to a particular category. Unlike linear regression, which predicts continuous outcomes, logistic regression predicts the probability of the outcome being a success (usually coded as 1) or failure (coded as 0).
+
+### Mathematical Formulation:
+
+1. **Logistic Function (Sigmoid Function):**
+
+   The logistic regression model uses the logistic function to map predicted values to probabilities. The logistic function is defined as:
+
+   \[
+   \sigma(z) = \frac{1}{1 + e^{-z}}
+   \]
+
+   where \( z \) is a linear combination of the input features.
+
+2. **Linear Combination:**
+
+   The linear combination of the input features is given by:
+
+   \[
+   z = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \ldots + \beta_n x_n
+   \]
+
+   Here, \( \beta_0 \) is the intercept, \( \beta_1, \beta_2, \ldots, \beta_n \) are the coefficients of the model, and \( x_1, x_2, \ldots, x_n \) are the input features.
+
+3. **Probability Estimation:**
+
+   The probability that the output \( Y \) is 1 given the input features \( X \) is:
+
+   \[
+   P(Y=1|X) = \sigma(z) = \frac{1}{1 + e^{-(\beta_0 + \beta_1 x_1 + \beta_2 x_2 + \ldots + \beta_n x_n)}}
+   \]
+
+4. **Log-Odds and Logit Function:**
+
+   The log-odds of the probability is a linear function of the input features:
+
+   \[
+   \text{logit}(P) = \log\left(\frac{P}{1-P}\right) = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \ldots + \beta_n x_n
+   \]
+
+The module should be named GPTLogisticRegression.  
+The module must contain a fit function and a predict function.  
+The fit function accepts X_train, y_train as input and return None where  
+X_train: the features of the train data, which is a numpy array, and the shape of X_train is [N, d]. N is the number of the train data and d is the dimension.  
+y_train: the labels pf the train data,which is a numpy array.  
+The predict function accepts X_test as input and return predictions where  
+X_test: the features of the test data, which is a numpy array, and the shape of X_train is [N, d]. N is the number of the test data and d is the dimension.  
+predctions: the predicted classes for X_test, which is a numpy arrary.  
+You should just return the code for the module, don't return anything else.

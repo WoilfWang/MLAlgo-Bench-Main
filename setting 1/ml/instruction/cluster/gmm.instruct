@@ -1,0 +1,54 @@
+Implement a gaussian mixture model for clustering with python, numpy and scipy.  
+Representation of a Gaussian mixture model probability distribution. This class allows to estimate the parameters of a Gaussian mixture distribution.
+
+### Mathematical Formulation:
+
+1. **Model Definition**:
+   A Gaussian mixture model is defined as a weighted sum of \( M \) Gaussian densities. These densities are parameterized by means \( \mu_k \), covariances \( \Sigma_k \), and mixture weights \( \pi_k \). The probability density function of GMM is given by:
+   \[
+   p(x) = \sum_{k=1}^M \pi_k \mathcal{N}(x | \mu_k, \Sigma_k)
+   \]
+   where \( \mathcal{N}(x | \mu_k, \Sigma_k) \) is the probability density function of the Gaussian distribution:
+   \[
+   \mathcal{N}(x | \mu_k, \Sigma_k) = \frac{1}{\sqrt{(2\pi)^d |\Sigma_k|}} \exp\left(-\frac{1}{2} (x - \mu_k)^T \Sigma_k^{-1} (x - \mu_k)\right)
+   \]
+   Here, \( d \) is the dimensionality of the data, \( |\Sigma_k| \) is the determinant of the covariance matrix \( \Sigma_k \), and \( \pi_k \) are the mixture weights that satisfy \( \sum_{k=1}^M \pi_k = 1 \) and \( \pi_k \geq 0 \).
+
+2. **Parameter Estimation**:
+   The parameters \( \mu_k \), \( \Sigma_k \), and \( \pi_k \) are typically estimated using the Expectation-Maximization (EM) algorithm, which iteratively optimizes the log-likelihood of the observed data.
+
+### Algorithmic Flow of GMM using EM:
+
+**Expectation-Maximization (EM) Algorithm**:
+
+- **Initialization**: Start with initial guesses for the parameters \( \mu_k \), \( \Sigma_k \), and \( \pi_k \).
+
+- **E-Step (Expectation step)**: Calculate the responsibilities \( \gamma(z_{nk}) \) which denote the probability that data point \( x_n \) belongs to cluster \( k \):
+  \[
+  \gamma(z_{nk}) = \frac{\pi_k \mathcal{N}(x_n | \mu_k, \Sigma_k)}{\sum_{j=1}^M \pi_j \mathcal{N}(x_n | \mu_j, \Sigma_j)}
+  \]
+
+- **M-Step (Maximization step)**: Re-estimate the parameters using the current responsibilities:
+  \[
+  \mu_k^{new} = \frac{1}{N_k} \sum_{n=1}^N \gamma(z_{nk}) x_n
+  \]
+  \[
+  \Sigma_k^{new} = \frac{1}{N_k} \sum_{n=1}^N \gamma(z_{nk}) (x_n - \mu_k^{new})(x_n - \mu_k^{new})^T
+  \]
+  \[
+  \pi_k^{new} = \frac{N_k}{N}
+  \]
+  where \( N_k = \sum_{n=1}^N \gamma(z_{nk}) \) is the effective number of points assigned to cluster \( k \).
+
+- **Convergence Check**: Repeat the E-step and M-step until the change in log-likelihood or parameters is below a certain threshold.
+
+This iterative process continues until the parameters converge, and the data points are effectively "soft-assigned" to the clusters based on the Gaussian distributions.
+
+The module should be named GPTGaussianMixture.  
+The init function should include the following parameters:
+n_components: The number of mixture components.
+The module must contain a fit_predict function.  
+The fit_predict function accepts X as input and return labels where  
+X: X is the features of the data, which is a numpy array and it's shape is [N, d]. N is the number of the train data and d is the dimension.  
+labels: A numpy array of shape (n_samples,) containing the index of the cluster each sample belongs to.  
+You should just return the code for the module, don't return anything else.

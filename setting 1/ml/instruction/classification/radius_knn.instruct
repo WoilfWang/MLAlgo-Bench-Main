@@ -1,0 +1,28 @@
+Implement the radius neighbors classifier with python, numpy and scipy. It can handle multi-class classification problems.  
+
+The principle behind the Radius Neighbors Classifier is to classify a data point based on the majority class of its neighbors within a given radius. This approach is particularly useful when the density of data points varies across the feature space, allowing for more flexibility compared to the fixed k-nearest neighbors approach.
+### Algorithmic Flow
+
+1. **Parameter Selection**: Choose a radius \( r \) which defines the neighborhood around each data point.
+
+2. **Distance Metric**: Select a distance metric, commonly the Euclidean distance, to measure the distance between data points. The Euclidean distance between two points \( \mathbf{x}_i \) and \( \mathbf{x}_j \) in an \( n \)-dimensional space is given by:
+   \[
+   d(\mathbf{x}_i, \mathbf{x}_j) = \sqrt{\sum_{k=1}^{n} (x_{ik} - x_{jk})^2}
+   \]
+
+3. **Neighborhood Identification**: For each test data point \( \mathbf{x}_t \), identify all training data points \( \mathbf{x}_i \) such that the distance \( d(\mathbf{x}_t, \mathbf{x}_i) \leq r \).
+
+4. **Voting Mechanism**: Determine the class of the test data point \( \mathbf{x}_t \) by majority voting among the classes of the neighbors identified in the previous step. If there are no neighbors within the radius, a default strategy can be applied, such as predicting the most frequent class in the training set.
+
+
+The module should be named GPTRadiusNeighborsClassifier.  
+The init function should include the following parameters:
+radius: Range of parameter space to use by default for radius_neighbors queries.
+The module must contain a fit function and a predict function. The fit function is used to fit the training data, and the predict function is used to predict the labels for the given features.  
+The fit function accepts X_train, y_train as input and return None where  
+X_train: the features of the train data, which is a numpy array, and the shape of X_train is [N, d]. N is the number of the train data and d is the dimension.  
+y_train: the labels pf the train data,which is a numpy array.  
+The predict function accepts X_test as input and return predictions where  
+X_test: the features of the test data, which is a numpy array, and the shape of X_train is [N, d]. N is the number of the test data and d is the dimension.  
+predctions: the predicted labels for X_test, which is a numpy arrary.  
+You should just return the code for the module, don't return anything else.

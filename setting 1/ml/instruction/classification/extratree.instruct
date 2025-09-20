@@ -1,0 +1,60 @@
+Implement the extra-trees classifier with python, numpy and scipy. It can handle multi-class classification problems. 
+The information gain should use Gini impurity.
+
+Extra-trees differ from classic decision trees in the way they are built. When looking for the best split to separate the samples of a node into two groups, random splits are drawn for each of the max_features randomly selected features and the best split among those is chosen. When max_features is set 1, this amounts to building a totally random decision tree.
+### Principle of Extra-Trees
+
+The key idea behind Extra-Trees is to use random thresholds for each feature and to choose the best split among these thresholds, unlike the more sophisticated splitting used in other algorithms like Random Forests. This randomness in choosing the thresholds helps in creating a more diverse set of trees which often results in better generalization capabilities.
+
+### Algorithmic Flow
+
+1. **Tree Construction**:
+   - Start with the entire training set at the root node.
+   - If the termination criteria are met (e.g., maximum depth, minimum samples per leaf, etc.), stop branching and declare the node a leaf.
+   - If not, proceed to select features and thresholds.
+
+2. **Feature and Threshold Selection**:
+   - Randomly select a subset of features.
+   - For each selected feature, generate a random threshold or use a random subset of the empirical feature values (unique values in the training set).
+   - Evaluate each (feature, threshold) pair to determine the best split.
+
+3. **Split Evaluation using Gini Impurity**:
+   - For a binary classification, the Gini impurity of a set is calculated as:
+     \[
+     Gini(t) = 1 - \sum_{i=1}^{J} p_i^2
+     \]
+     where \( p_i \) is the proportion of class \( i \) instances among the training instances in node \( t \), and \( J \) is the number of classes.
+   - The Gini impurity for a split that divides the data into two subsets \( D_{left} \) and \( D_{right} \) is:
+     \[
+     Gini_{split} = \frac{|D_{left}|}{|D|} Gini(D_{left}) + \frac{|D_{right}|}{|D|} Gini(D_{right})
+     \]
+   - The information gain from the split is then:
+     \[
+     IG = Gini(t) - Gini_{split}
+     \]
+   - Choose the split that maximizes the information gain.
+
+4. **Recursive Splitting**:
+   - Apply steps 2 and 3 recursively to each derived subset \( D_{left} \) and \( D_{right} \) until the stopping criteria are met for each node.
+
+5. **Ensemble Prediction**:
+   - Once all trees are built, predictions for a new sample are made by aggregating the predictions from all the trees in the ensemble. For classification, this is typically done by majority voting.
+
+### Differences from Other Tree Methods
+
+- **Randomness**: Extra-Trees introduces more randomness compared to other tree methods like Random Forest by using random thresholds for each feature rather than searching for the optimal split.
+- **Bias-Variance Tradeoff**: The increased randomness can lead to a reduction in variance with a slight increase in bias, which often results in better overall performance on unseen data.
+
+The module should be named GPTExtraTreesClassifier.  
+The init function should include the following parameters:
+max_depth: The maximum depth of the tree. If None, then nodes are expanded until all leaves are pure or until all leaves contain less than min_samples_split samples;
+min_samples_split: The minimum number of samples required to split an internal node;
+min_samples_leaf: The minimum number of samples required to be at a leaf node.
+The module must contain a fit function and a predict function. The fit function is used to fit the training data, and the predict function is used to predict the labels for the given features.  
+The fit function accepts X_train, y_train as input and return None where  
+X_train: the features of the train data, which is a numpy array, and the shape of X_train is [N, d]. N is the number of the train data and d is the dimension.  
+y_train: the labels pf the train data,which is a numpy array.  
+The predict function accepts X_test as input and return predictions where  
+X_test: the features of the test data, which is a numpy array, and the shape of X_train is [N, d]. N is the number of the test data and d is the dimension.  
+predctions: the predicted labels for X_test, which is a numpy arrary.  
+You should just return the code for the module, don't return anything else.

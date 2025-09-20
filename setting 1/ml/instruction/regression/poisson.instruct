@@ -1,0 +1,46 @@
+Implement the poisson regressor with python, numpy and scipy. Generalized Linear Model with a poisson distribution.  
+
+The principle behind the Poisson regression is to model the logarithm of the expected value of the response variable as a linear combination of the predictor variables. This is expressed as:
+
+\[ \log(\lambda_i) = \beta_0 + \beta_1 x_{i1} + \beta_2 x_{i2} + \ldots + \beta_p x_{ip} \]
+
+where:
+- \( \lambda_i \) is the expected count for the \(i\)-th observation.
+- \( \beta_0, \beta_1, \ldots, \beta_p \) are the coefficients to be estimated.
+- \( x_{i1}, x_{i2}, \ldots, x_{ip} \) are the predictor variables.
+
+The expected count \( \lambda_i \) can be obtained by exponentiating the linear predictor:
+
+\[ \lambda_i = e^{\beta_0 + \beta_1 x_{i1} + \beta_2 x_{i2} + \ldots + \beta_p x_{ip}} \]
+
+### Algorithmic Flow
+
+1. **Initialization**: Start with initial guesses for the coefficients \( \beta_0, \beta_1, \ldots, \beta_p \).
+
+2. **Iterative Optimization**: Use an iterative method such as Iteratively Reweighted Least Squares (IRLS) or Maximum Likelihood Estimation (MLE) to find the coefficients that maximize the likelihood of the observed data.
+
+   - **Likelihood Function**: The likelihood function for the Poisson distribution is given by:
+
+     \[ L(\beta) = \prod_{i=1}^{n} \frac{e^{-\lambda_i} \lambda_i^{y_i}}{y_i!} \]
+
+     where \( y_i \) is the observed count for the \(i\)-th observation.
+
+   - **Log-Likelihood**: The log-likelihood, which is easier to work with, is:
+
+     \[ \log L(\beta) = \sum_{i=1}^{n} \left( y_i \log(\lambda_i) - \lambda_i - \log(y_i!) \right) \]
+
+   - **Gradient and Hessian**: Compute the gradient and Hessian of the log-likelihood with respect to the coefficients to update them iteratively.
+
+3. **Convergence**: Continue the iterative process until convergence is achieved, typically when changes in the coefficients are below a certain threshold.
+
+The module should be named GPTPoissonRegressor.  
+The init fucntion should include the following parameters:
+alpha: Constant that multiplies the L2 penalty term and determines the regularization strength.
+The module must contain a fit function and a predict function. The fit function is used to fit the training data, and the predict function is used to predict the labels for the given features.  
+The fit function accepts X_train, y_train as input and return None where  
+X_train: the features of the train data, which is a numpy array, and the shape of X_train is [N, d]. N is the number of the train data and d is the dimension.  
+y_train: the labels pf the train data,which is a numpy array.  
+The predict function accepts X_test as input and return predictions where  
+X_test: the features of the test data, which is a numpy array, and the shape of X_train is [N, d]. N is the number of the test data and d is the dimension.  
+predctions: the predicted labels for X_test, which is a numpy arrary.  
+You should just return the code for the module, don't return anything else.

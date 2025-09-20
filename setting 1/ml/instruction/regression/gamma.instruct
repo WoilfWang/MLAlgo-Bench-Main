@@ -1,0 +1,47 @@
+Implement the gamma regressor with python, numpy and scipy. Generalized Linear Model with a Gamma distribution. 
+
+The principle behind the Gamma Regressor is to model the mean of the response variable \( Y \) as a function of the predictors \( X \) using a link function. The Gamma distribution is characterized by its shape parameter \( k \) and scale parameter \( \theta \), with the mean \( \mu = k\theta \) and variance \( \sigma^2 = k\theta^2 \).
+
+### Algorithmic Flow
+
+1. **Model Specification**: 
+   - The response variable \( Y \) is assumed to follow a Gamma distribution.
+   - The mean of the distribution \( \mu \) is linked to the linear predictors \( \eta = X\beta \) through a link function \( g(\mu) = \eta \).
+
+2. **Link Function**:
+   - Commonly, the log link function is used: \( g(\mu) = \log(\mu) \).
+   - This implies \( \mu = \exp(X\beta) \).
+
+3. **Likelihood Function**:
+   - The likelihood for a Gamma distribution is given by:
+     \[
+     L(\beta) = \prod_{i=1}^{n} \frac{y_i^{k-1} e^{-y_i/\theta}}{\Gamma(k) \theta^k}
+     \]
+   - For the log link, the log-likelihood is:
+     \[
+     \log L(\beta) = \sum_{i=1}^{n} \left( (k-1)\log(y_i) - \frac{y_i}{\theta} - \log(\Gamma(k)) - k\log(\theta) \right)
+     \]
+
+4. **Parameter Estimation**:
+   - The parameters \( \beta \) are estimated using Maximum Likelihood Estimation (MLE).
+   - This involves iteratively solving the score equations derived from the log-likelihood function.
+
+5. **Iterative Reweighted Least Squares (IRLS)**:
+   - The estimation is typically performed using IRLS, which is an iterative optimization technique.
+   - At each iteration, the weights are updated based on the current estimate of \( \mu \), and a weighted least squares problem is solved.
+
+6. **Convergence**:
+   - The algorithm iterates until convergence, which is usually determined by a threshold on the change in log-likelihood or parameter estimates.
+
+
+The module should be named GPTGammaRegressor.  
+The init function parameters should include the following parameters:
+alpha: Constant that multiplies the L2 penalty term and determines the regularization strength.
+The module must contain a fit function and a predict function. The fit function is used to fit the training data, and the predict function is used to predict the labels for the given features.  
+The fit function accepts X_train, y_train as input and return None where  
+X_train: the features of the train data, which is a numpy array, and the shape of X_train is [N, d]. N is the number of the train data and d is the dimension.  
+y_train: the labels pf the train data,which is a numpy array.  
+The predict function accepts X_test as input and return predictions where  
+X_test: the features of the test data, which is a numpy array, and the shape of X_train is [N, d]. N is the number of the test data and d is the dimension.  
+predctions: the predicted labels for X_test, which is a numpy arrary.  
+You should just return the code for the module, don't return anything else.

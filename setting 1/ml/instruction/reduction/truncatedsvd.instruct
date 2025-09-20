@@ -1,0 +1,44 @@
+Implement the truncated SVD algorithm for dimensionality reduction with python, numpy and scipy. You can't use the package of sklearn. 
+This transformer performs linear dimensionality reduction by means of truncated singular value decomposition (SVD). Contrary to PCA, this estimator does not center the data before computing the singular value decomposition. This means it can work with sparse matrices efficiently. In particular, truncated SVD works on term count/tf-idf matrices as returned by the vectorizers in :mod:`sklearn.feature_extraction.text`. In that context, it is known as latent semantic analysis (LSA). This estimator supports two algorithms: a fast randomized SVD solver, and a "naive" algorithm that uses ARPACK as an eigensolver on `X * X.T` or `X.T * X`, whichever is more efficient.
+
+The principle behind truncated SVD is to approximate a matrix \( A \) by a matrix of lower rank \( k \), where \( k \) is less than the original rank of \( A \). This is achieved by retaining only the top \( k \) singular values and their corresponding singular vectors. The truncated SVD provides a low-rank approximation of the original matrix, capturing the most significant features while discarding less important information.
+
+### Mathematical Formulation
+
+Given a matrix \( A \) of size \( m \times n \), the full SVD is expressed as:
+
+\[ A = U \Sigma V^T \]
+
+Where:
+- \( U \) is an \( m \times m \) orthogonal matrix whose columns are the left singular vectors.
+- \( \Sigma \) is an \( m \times n \) diagonal matrix with non-negative real numbers on the diagonal, known as singular values, sorted in descending order.
+- \( V^T \) is the transpose of an \( n \times n \) orthogonal matrix whose columns are the right singular vectors.
+
+In truncated SVD, we approximate \( A \) by retaining only the top \( k \) singular values and their corresponding singular vectors:
+
+\[ A_k = U_k \Sigma_k V_k^T \]
+
+Where:
+- \( U_k \) is an \( m \times k \) matrix containing the first \( k \) columns of \( U \).
+- \( \Sigma_k \) is a \( k \times k \) diagonal matrix containing the top \( k \) singular values.
+- \( V_k^T \) is a \( k \times n \) matrix containing the first \( k \) rows of \( V^T \).
+
+### Algorithmic Flow
+
+1. **Compute the Full SVD**: Start by computing the full SVD of the matrix \( A \) to obtain \( U \), \( \Sigma \), and \( V^T \).
+
+2. **Select Top \( k \) Components**: Choose the top \( k \) singular values from \( \Sigma \) and their corresponding singular vectors from \( U \) and \( V \).
+
+3. **Formulate Truncated Matrices**: Construct \( U_k \), \( \Sigma_k \), and \( V_k^T \) using the selected components.
+
+4. **Reconstruct the Approximation**: Multiply the truncated matrices to obtain the low-rank approximation \( A_k = U_k \Sigma_k V_k^T \).
+
+
+The module should be named GPTTruncatedSVD.
+The init function should include the following parameters:
+n_components: Desired dimensionality of output data.
+The module must contain a fit_transform function, which is used for fitting data and performing dimensionality reduction transformations.
+The fit_transform function accepts X as input and return reduced_X where
+X: X is the features of the data, which is a numpy array and it's shape is [N, d]. N is the number of the train data and d is the dimension.
+reduced_X: reduced_X is the reduced features after dimensionality reduction. The shape should be [N, low_d], where N is the num of the data and low_d is the reduced dimension.
+You should just return the code for the module, don't return anything else.

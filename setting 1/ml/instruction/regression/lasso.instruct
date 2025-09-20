@@ -1,0 +1,59 @@
+Implement a lasso model for regression with python, numpy and scipy.  
+
+The Lasso (Least Absolute Shrinkage and Selection Operator) is a regression analysis method that enhances the prediction accuracy and interpretability of statistical models it produces. It is particularly useful when dealing with datasets that have a large number of features, as it performs both variable selection and regularization.
+
+### Principle of Lasso Regression
+
+The primary goal of Lasso is to minimize the residual sum of squares subject to the sum of the absolute value of the coefficients being less than a constant. This constraint has the effect of shrinking some coefficients to exactly zero, thus performing variable selection.
+
+### Mathematical Formulation
+
+The Lasso regression problem can be formulated as:
+
+\[
+\min_{\beta} \left( \frac{1}{2n} \sum_{i=1}^{n} (y_i - X_i \beta)^2 + \lambda \sum_{j=1}^{p} |\beta_j| \right)
+\]
+
+Where:
+- \( y_i \) is the response variable.
+- \( X_i \) is the vector of predictor variables.
+- \( \beta \) is the vector of coefficients.
+- \( \lambda \) is the regularization parameter that controls the strength of the penalty.
+- \( n \) is the number of observations.
+- \( p \) is the number of predictors.
+
+### Algorithmic Flow
+
+1. **Standardization**: Standardize the predictor variables to have a mean of zero and a standard deviation of one. This ensures that the penalty term is applied equally to all coefficients.
+
+2. **Initialization**: Start with an initial guess for the coefficients, often set to zero.
+
+3. **Coordinate Descent**: This is the most common algorithm used to solve the Lasso problem. It involves iteratively updating each coefficient while keeping the others fixed. The update for each coefficient \( \beta_j \) is given by:
+
+   \[
+   \beta_j \leftarrow \text{soft}\left(\frac{1}{n} \sum_{i=1}^{n} x_{ij} (y_i - \hat{y}_i^{(-j)}), \lambda\right)
+   \]
+
+   Where:
+   - \( \hat{y}_i^{(-j)} \) is the predicted value of \( y_i \) excluding the contribution from \( x_{ij} \).
+   - The soft thresholding operator is defined as:
+
+   \[
+   \text{soft}(z, \lambda) = \begin{cases} 
+   z - \lambda & \text{if } z > \lambda \\
+   0 & \text{if } |z| \leq \lambda \\
+   z + \lambda & \text{if } z < -\lambda 
+   \end{cases}
+   \]
+
+
+The module should be named GPTLassoRegression.  
+The init function's parameter should contain alpha, where alpha is the parameter to balance the loss and L1 loss.
+The module must contain a fit function and a predict function.  
+The fit function accepts X_train and y_train as input and return None where  
+X_train: the features of the train data, which is a numpy array, and the shape of X_train is [N, d]. N is the number of the train data and d is the dimension.  
+y_train: the labels pf the train data,which is a numpy array.  
+The predict function accepts X_test as input and return predictions where  
+X_test: the features of the test data, which is a numpy array, and the shape of X_train is [N, d]. N is the number of the test data and d is the dimension.  
+predctions: the predicted results for X_test, which is a numpy arrary.  
+You should just return the code for the module, don't return anything else.

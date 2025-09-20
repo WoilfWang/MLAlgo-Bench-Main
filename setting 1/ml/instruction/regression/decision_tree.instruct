@@ -1,0 +1,34 @@
+Implement a decision tree regressor for regression with python, numpy and scipy.  
+
+The decision tree regressor works by recursively splitting the data into smaller subsets. Each split is made based on a feature and a threshold that results in the greatest possible reduction in variance of the target variable within the subsets. The process continues until a stopping criterion is met, such as a maximum depth of the tree or a minimum number of samples in a leaf node.
+### Algorithmic Flow
+
+1. **Start with the Entire Dataset**: Consider the entire dataset as the root node.
+
+2. **Select the Best Split**:
+   - For each feature, consider all possible splits (thresholds).
+   - Calculate the variance reduction for each split. The variance reduction is given by:
+     \[
+     \Delta \text{Var}(S, A) = \text{Var}(S) - \left( \frac{|S_{\text{left}}|}{|S|} \text{Var}(S_{\text{left}}) + \frac{|S_{\text{right}}|}{|S|} \text{Var}(S_{\text{right}}) \right)
+     \]
+     where \( S \) is the set of samples at the node, \( S_{\text{left}} \) and \( S_{\text{right}} \) are the subsets resulting from the split, and \(\text{Var}(S)\) is the variance of the target values in set \( S \).
+
+3. **Perform the Split**: Choose the feature and threshold that result in the maximum variance reduction and split the node into two child nodes.
+
+4. **Repeat Recursively**: Apply the same process to each child node, recursively, until a stopping criterion is met (e.g., maximum depth, minimum samples per leaf).
+
+5. **Assign Predictions**: Once a leaf node is reached, assign the mean of the target values in that node as the prediction for any sample that falls into that node.
+
+The module should be named GPTDecisionRegressionTree.  
+The init function should include the follwoing parameters:
+max_depth: The maximum depth of the tree. If None, then nodes are expanded until all leaves are pure or until all leaves contain less than min_samples_split samples;
+min_samples_split: The minimum number of samples required to split an internal node;
+min_samples_leaf: The minimum number of samples required to be at a leaf node.
+The module must contain a fit function and a predict function.  
+The fit function accepts X_train and y_train and return None where  
+X_train: the features of the train data, which is a numpy array, and the shape of X_train is [N, d]. N is the number of the train data and d is the dimension.  
+y_train: the labels pf the train data,which is a numpy array.  
+The predict function accepts X_test as input and return predictions where  
+X_test: the features of the test data, which is a numpy array, and the shape of X_train is [N, d]. N is the number of the test data and d is the dimension.  
+predctions: the predicted results for X_test, which is a numpy arrary.  
+You should just return the code for the module, don't return anything else.

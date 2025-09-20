@@ -1,0 +1,74 @@
+Implement a multilayer perceptron model to handle regression problems with python, and pytorch.  
+
+The MLP operates on the principle of learning a mapping from input features to output targets through a series of transformations. Each neuron in the network applies a weighted sum of its inputs, adds a bias, and passes the result through a non-linear activation function. The network is trained using a dataset to minimize the difference between the predicted outputs and the actual target values.
+
+### Algorithmic Flow
+
+1. **Initialization**:
+   - Initialize weights \( W \) and biases \( b \) for each layer, typically with small random values.
+
+2. **Forward Propagation**:
+   - For each layer \( l \), compute the activations \( a^{(l)} \) using the formula:
+     \[
+     z^{(l)} = W^{(l)}a^{(l-1)} + b^{(l)}
+     \]
+     \[
+     a^{(l)} = \sigma(z^{(l)})
+     \]
+     where \( \sigma \) is the activation function (e.g., ReLU, sigmoid, tanh), \( z^{(l)} \) is the linear combination of inputs, and \( a^{(l-1)} \) are the activations from the previous layer.
+
+3. **Output Layer**:
+   - For regression tasks, the output layer typically uses a linear activation function to produce continuous values:
+     \[
+     \hat{y} = W^{(L)}a^{(L-1)} + b^{(L)}
+     \]
+     where \( L \) is the last layer.
+
+4. **Loss Calculation**:
+   - Compute the loss using a suitable loss function, such as Mean Squared Error (MSE):
+     \[
+     \mathcal{L} = \frac{1}{n} \sum_{i=1}^{n} (y_i - \hat{y}_i)^2
+     \]
+     where \( y_i \) is the true target value and \( \hat{y}_i \) is the predicted value.
+
+5. **Backward Propagation**:
+   - Compute the gradient of the loss with respect to each weight and bias using the chain rule. This involves calculating the derivative of the loss with respect to the output, and then propagating these gradients backward through the network:
+     \[
+     \frac{\partial \mathcal{L}}{\partial W^{(l)}} = \delta^{(l)} \cdot a^{(l-1)^T}
+     \]
+     \[
+     \frac{\partial \mathcal{L}}{\partial b^{(l)}} = \delta^{(l)}
+     \]
+     where \( \delta^{(l)} \) is the error term for layer \( l \), computed as:
+     \[
+     \delta^{(l)} = (W^{(l+1)^T} \delta^{(l+1)}) \odot \sigma'(z^{(l)})
+     \]
+     and \( \odot \) denotes element-wise multiplication.
+
+6. **Weight Update**:
+   - Update the weights and biases using a gradient descent optimization algorithm, such as Stochastic Gradient Descent (SGD) or Adam:
+     \[
+     W^{(l)} = W^{(l)} - \eta \frac{\partial \mathcal{L}}{\partial W^{(l)}}
+     \]
+     \[
+     b^{(l)} = b^{(l)} - \eta \frac{\partial \mathcal{L}}{\partial b^{(l)}}
+     \]
+     where \( \eta \) is the learning rate.
+
+7. **Iteration**:
+   - Repeat the forward and backward propagation steps for a number of epochs or until convergence.
+
+The module should be named GPTMLP. 
+The init function should include the following parameters:
+hidden_layer_sizes: The ith element represents the number of neurons in the ith hidden layer;
+alpha: Strength of the L2 regularization term. The L2 regularization term is divided by the sample size when added to the loss;
+batch_size: Size of minibatches for stochastic optimizers;
+learning_rate_init: The initial learning rate used;
+max_iter: Maximum number of iterations.
+The fit function accepts X_train and y_train as input and return None where  
+X_train: the features of the train data, which is a numpy array, and the shape of X_train is [N, d]. N is the number of the train data and d is the dimension.  
+y_train: the labels pf the train data,which is a numpy array.  
+The predict function accepts X_test as input and return predictions where  
+X_test: the features of the test data, which is a numpy array, and the shape of X_train is [N, d]. N is the number of the test data and d is the dimension.  
+predctions: the predicted results for X_test, which is a numpy arrary.  
+You should just return the code for the module, don't return anything else.

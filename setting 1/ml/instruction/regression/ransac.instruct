@@ -1,0 +1,56 @@
+Implement a ransac regressor for regression with python, numpy and scipy. 
+RANSAC is an iterative algorithm for the robust estimation of parameters from a subset of inliers from the complete data set.
+
+### Algorithmic Flow:
+
+1. **Initialize Parameters**:
+   - Set the number of iterations \( N \).
+   - Define the tolerance threshold \( \epsilon \) for determining inliers.
+   - Set the minimum number of inliers required to consider a model valid.
+
+2. **Iterative Process**:
+   - For each iteration:
+     1. Randomly select a minimal subset of data points.
+     2. Fit the model to these points. For linear regression, calculate the line parameters:
+        \[
+        y = mx + c
+        \]
+        where \( m \) is the slope and \( c \) is the intercept.
+     3. Calculate the residuals for all data points:
+        \[
+        r_i = |y_i - (mx_i + c)|
+        \]
+     4. Identify inliers where \( r_i < \epsilon \).
+     5. If the number of inliers is greater than the current best model, update the best model.
+
+3. **Select Best Model**:
+   - Choose the model with the maximum number of inliers.
+   - Optionally, re-fit the model using all inliers to improve accuracy.
+
+### Mathematical Derivation:
+
+For a linear model, the line parameters \( m \) and \( c \) can be derived from two points \((x_1, y_1)\) and \((x_2, y_2)\) as follows:
+
+- Slope \( m \):
+  \[
+  m = \frac{y_2 - y_1}{x_2 - x_1}
+  \]
+
+- Intercept \( c \):
+  \[
+  c = y_1 - m \cdot x_1
+  \]
+
+RANSAC is particularly useful in scenarios where the dataset contains a significant number of outliers, as it focuses on finding a model that best fits the inliers, thus providing a robust solution.
+
+The module should be named GPTRANSACRegressor.  
+The init function should include the following parameters:
+estimator: Base estimator object which implements the following methods:fit(X, y): Fit model to given training data and target values;score(X, y): Returns the mean accuracy on the given test data, which is used for the stop criterion defined by stop_score. Additionally, the score is used to decide which of two equally large consensus sets is chosen as the better one. predict(X): Returns predicted values using the linear model, which is used to compute residual error using loss function.
+The module must contain a fit function and a predict function.  
+The fit function accepts X_train and y_train and return None where  
+X_train: the features of the train data, which is a numpy array, and the shape of X_train is [N, d]. N is the number of the train data and d is the dimension.  
+y_train: the labels pf the train data,which is a numpy array.  
+The predict function accepts X_test as input and return predictions where  
+X_test: the features of the test data, which is a numpy array, and the shape of X_train is [N, d]. N is the number of the test data and d is the dimension.  
+predctions: the predicted results for X_test, which is a numpy arrary.  
+You should just return the code for the module, don't return anything else.

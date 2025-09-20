@@ -1,0 +1,53 @@
+Implement the Kernel Principal component analysis algorithm for dimensionality reduction with python, numpy and scipy. Non-linear dimensionality reduction through the use of kernels. 
+
+### Principle of Kernel PCA
+
+1. **Nonlinear Mapping**: The data is first mapped from the original input space \(\mathbb{R}^n\) to a high-dimensional feature space \(\mathcal{F}\) using a nonlinear mapping function \(\phi: \mathbb{R}^n \rightarrow \mathcal{F}\).
+
+2. **Kernel Trick**: Instead of computing the coordinates of the data in the feature space explicitly, Kernel PCA uses the kernel trick. This involves computing the dot products in the feature space using a kernel function \(k(x, y) = \langle \phi(x), \phi(y) \rangle\), which allows operations in the high-dimensional space without explicitly mapping the data.
+
+3. **Eigenvalue Problem**: In the feature space, the covariance matrix is constructed, and its eigenvectors and eigenvalues are computed. The eigenvectors correspond to the principal components.
+
+### Algorithmic Flow of Kernel PCA
+
+1. **Compute the Kernel Matrix**: For a given dataset \(X = \{x_1, x_2, \ldots, x_m\}\), compute the kernel matrix \(K\) using the Radial Basis Function (RBF) kernel:
+   \[
+   K_{ij} = \exp\left(-\frac{\|x_i - x_j\|^2}{2\sigma^2}\right)
+   \]
+   where \(\sigma\) is a parameter that defines the width of the RBF kernel.
+
+2. **Center the Kernel Matrix**: Center the kernel matrix \(K\) to ensure that the data is centered in the feature space:
+   \[
+   \tilde{K} = K - \mathbf{1}_m K - K \mathbf{1}_m + \mathbf{1}_m K \mathbf{1}_m
+   \]
+   where \(\mathbf{1}_m\) is an \(m \times m\) matrix with all elements equal to \(\frac{1}{m}\).
+
+3. **Solve the Eigenvalue Problem**: Solve the eigenvalue problem for the centered kernel matrix:
+   \[
+   \tilde{K} \alpha = \lambda \alpha
+   \]
+   where \(\lambda\) are the eigenvalues and \(\alpha\) are the eigenvectors.
+
+4. **Select Principal Components**: Choose the top \(k\) eigenvectors corresponding to the largest eigenvalues. These eigenvectors represent the principal components in the feature space.
+
+5. **Project the Data**: Project the original data into the new space using the selected eigenvectors:
+   \[
+   \text{Projection of } x = \sum_{i=1}^{m} \alpha_i k(x, x_i)
+   \]
+   where \(\alpha_i\) are the coefficients of the eigenvectors.
+
+### Mathematical Derivations
+
+- **Kernel Matrix**: The kernel matrix \(K\) is defined as \(K_{ij} = \langle \phi(x_i), \phi(x_j) \rangle\).
+- **Centering**: The centering step ensures that the mean of the data in the feature space is zero.
+- **Eigenvalue Problem**: The eigenvectors \(\alpha\) of the centered kernel matrix \(\tilde{K}\) correspond to the principal components in the feature space.
+
+You should use the rbf kernel.
+The module should be named GPTKernelPCA.
+The init function should include the following parameters:
+n_components: Number of components.
+The module must contain a fit_transform function, which is used for fitting data and performing dimensionality reduction transformations.
+The fit_transform function accepts X as input and return reduced_X where
+X: X is the features of the data, which is a numpy array and it's shape is [N, d]. N is the number of the data and d is the dimension.
+reduced_X: reduced_X is the reduced features after dimensionality reduction. The shape should be [N, low_d], where N is the num of the data and low_d is the reduced dimension.
+You should just return the code for the module, don't return anything else.

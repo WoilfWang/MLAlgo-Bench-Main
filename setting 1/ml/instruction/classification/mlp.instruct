@@ -1,0 +1,67 @@
+Implement a multilayer perceptron model for classification with python, and pytorch. It can handle multi-class classification problems.  
+
+The principle behind an MLP is to approximate a function \( f^* \) that maps input data \( \mathbf{x} \) to output labels \( \mathbf{y} \). The MLP learns this mapping by adjusting the weights and biases of the network through a process called backpropagation, minimizing the error between the predicted and actual outputs.
+
+### Algorithmic Flow
+
+1. **Initialization**: 
+   - Randomly initialize the weights \( \mathbf{W} \) and biases \( \mathbf{b} \) for each layer.
+
+2. **Forward Propagation**:
+   - For each layer \( l \), compute the linear combination of inputs:
+     \[
+     \mathbf{z}^{(l)} = \mathbf{W}^{(l)} \mathbf{a}^{(l-1)} + \mathbf{b}^{(l)}
+     \]
+   - Apply an activation function \( \sigma \) to introduce non-linearity:
+     \[
+     \mathbf{a}^{(l)} = \sigma(\mathbf{z}^{(l)})
+     \]
+   - Common activation functions include the sigmoid function \( \sigma(z) = \frac{1}{1 + e^{-z}} \), the hyperbolic tangent function \( \tanh(z) \), and the ReLU function \( \max(0, z) \).
+
+3. **Output Layer**:
+   - For classification, the output layer typically uses the softmax function to convert the output into probabilities:
+     \[
+     \hat{\mathbf{y}} = \text{softmax}(\mathbf{z}^{(L)}) = \frac{e^{\mathbf{z}^{(L)}}}{\sum_{j} e^{\mathbf{z}^{(L)}_j}}
+     \]
+
+4. **Loss Calculation**:
+   - Compute the loss using a suitable loss function, such as cross-entropy loss for classification:
+     \[
+     \mathcal{L}(\mathbf{y}, \hat{\mathbf{y}}) = -\sum_{i} y_i \log(\hat{y}_i)
+     \]
+
+5. **Backpropagation**:
+   - Compute the gradient of the loss with respect to each parameter using the chain rule. For the output layer:
+     \[
+     \delta^{(L)} = \hat{\mathbf{y}} - \mathbf{y}
+     \]
+   - For each hidden layer \( l \):
+     \[
+     \delta^{(l)} = (\mathbf{W}^{(l+1)})^T \delta^{(l+1)} \odot \sigma'(\mathbf{z}^{(l)})
+     \]
+   - Update the weights and biases using gradient descent or a variant like Adam:
+     \[
+     \mathbf{W}^{(l)} = \mathbf{W}^{(l)} - \eta \frac{\partial \mathcal{L}}{\partial \mathbf{W}^{(l)}}
+     \]
+     \[
+     \mathbf{b}^{(l)} = \mathbf{b}^{(l)} - \eta \frac{\partial \mathcal{L}}{\partial \mathbf{b}^{(l)}}
+     \]
+   - Here, \( \eta \) is the learning rate, and \( \odot \) denotes element-wise multiplication.
+
+6. **Iteration**:
+   - Repeat the forward and backward passes for a number of epochs
+
+The module should be named GPTMLP.  
+The module must contain a fit function and a predict function. 
+The init function should include the following parameters:
+hidden_layer_sizes: The ith element represents the number of neurons in the ith hidden layer;
+alpha: Strength of the L2 regularization term;
+batch_size: Size of minibatches for stochastic optimizers;
+learning_rate_init: The initial learning rate used.
+The fit function accepts X_train and y_train as input and return None where  
+X_train: the features of the train data, which is a numpy array, and the shape of X_train is [N, d]. N is the number of the train data and d is the dimension.  
+y_train: the labels pf the train data,which is a numpy array.  
+The predict function accepts X_test as input and return predictions where  
+X_test: the features of the test data, which is a numpy array, and the shape of X_train is [N, d]. N is the number of the test data and d is the dimension.  
+predctions: the predicted classes for X_test, which is a numpy arrary.  
+You should just return the code for the module, don't return anything else.

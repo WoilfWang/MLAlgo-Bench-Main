@@ -1,0 +1,56 @@
+Implement a random forest regressor for regression with python, numpy and scipy.  
+A random forest is a meta estimator that fits a number of decision tree regressors on various sub-samples of the dataset and uses averaging to improve the predictive accuracy and control over-fitting.
+
+The core principle of the Random Forest Regressor is to combine the predictions of several base estimators (decision trees) to improve generalization and robustness over a single estimator. This is achieved through two main techniques: **bagging** (Bootstrap Aggregating) and **feature randomness**.
+
+1. **Bagging**: Each tree in the forest is trained on a random subset of the training data, sampled with replacement. This means that some samples may be repeated in a subset, while others may be omitted. This technique helps in reducing variance and overfitting.
+
+2. **Feature Randomness**: When splitting a node during the construction of a tree, a random subset of features is considered. This introduces additional randomness and helps in making the model robust by reducing correlation among the trees.
+
+### Algorithmic Flow
+
+1. **Data Preparation**: Start with a dataset \( D \) containing \( n \) samples and \( m \) features.
+
+2. **Bootstrap Sampling**: For each tree \( t \) in the forest:
+   - Create a bootstrap sample \( D_t \) by randomly sampling \( n \) samples from \( D \) with replacement.
+
+3. **Tree Construction**: For each bootstrap sample \( D_t \):
+   - Grow a decision tree \( T_t \) using the following steps:
+     - At each node, select a random subset of features \( F_t \) of size \( \sqrt{m} \) (or another specified number).
+     - Find the best split among the selected features \( F_t \) based on a criterion like mean squared error (MSE).
+     - Split the node into child nodes and repeat the process recursively until a stopping criterion is met (e.g., maximum depth, minimum samples per leaf).
+
+4. **Prediction**: To make a prediction for a new sample \( x \):
+   - Pass \( x \) through each tree \( T_t \) in the forest to obtain individual predictions \( \hat{y}_t(x) \).
+   - Aggregate the predictions by averaging: 
+     \[
+     \hat{y}(x) = \frac{1}{T} \sum_{t=1}^{T} \hat{y}_t(x)
+     \]
+   where \( T \) is the total number of trees in the forest.
+
+### Mathematical Formulation
+
+- **Mean Squared Error (MSE)**: Used to evaluate the quality of a split in a decision tree. For a node with samples \( S \), the MSE is given by:
+  \[
+  \text{MSE}(S) = \frac{1}{|S|} \sum_{i \in S} (y_i - \bar{y})^2
+  \]
+  where \( \bar{y} \) is the mean of the target values in \( S \).
+
+- **Feature Selection**: At each node, randomly select a subset of features \( F_t \) to consider for splitting. This randomness helps in decorrelating the trees.
+
+
+The base regressor is decision tree regressor, which you should implement from scratch. The criterion should use squared error. 
+The module should be named GPTRandomForestRegressor.  
+The init function should incude the following the parameters:
+n_estimators: The number of trees in the forest;
+max_depth: The maximum depth of the tree. The maximum depth of the tree. If None, then nodes are expanded until all leaves are pure or until all leaves contain less than min_samples_split samples;
+min_samples_split: The minimum number of samples required to split an internal node;
+min_samples_leaf: The minimum number of samples required to be at a leaf node.
+The module must contain a fit function and a predict function.  
+The fit function accepts X_train and y_train and return None where  
+X_train: the features of the train data, which is a numpy array, and the shape of X_train is [N, d]. N is the number of the train data and d is the dimension.  
+y_train: the labels pf the train data,which is a numpy array.  
+The predict function accepts X_test as input and return predictions where  
+X_test: the features of the test data, which is a numpy array, and the shape of X_train is [N, d]. N is the number of the test data and d is the dimension.  
+predctions: the predicted results for X_test, which is a numpy arrary.  
+You should just return the code for the module, don't return anything else.
