@@ -72,5 +72,5 @@ sh run_evaluation.sh solution/gpt
 
 ## Will Come Soon
 
-1. The complete evaluation code and dataset for Setting 2 is currently at a completion level of 10 / 97. Continuous updates will be provided.
+1. The complete evaluation code and dataset for Setting 2 is currently at a completion level of 28 / 97. Continuous updates will be provided.
 2. The evaluation framework for Setting 1 will be restructured by integrating ML and DL evaluations into a unified codebase, improving the usability of the framework.
